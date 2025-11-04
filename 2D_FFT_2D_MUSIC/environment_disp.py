@@ -153,25 +153,25 @@ def visualize_environment(car_group, plant_group, light_group, people_group):
     # 绘制车辆（颜色映射速度）
     scatter_car = ax.scatter(
         car_group[:, 0], car_group[:, 1], car_group[:, 2],
-        c=car_group[:, 3], s=100, marker='.', cmap='coolwarm', vmin=-10, vmax=10
+        c=car_group[:, 3], s=100, marker='.', cmap='viridis', vmin=-10, vmax=10
     )
     
     # 绘制隔离带
     ax.scatter(
         plant_group[:, 0], plant_group[:, 1], plant_group[:, 2],
-        c=plant_group[:, 3], s=100, marker='.', cmap='coolwarm', vmin=-10, vmax=10
+        c=plant_group[:, 3], s=100, marker='.', cmap='viridis', vmin=-10, vmax=10
     )
     
     # 绘制路灯
     ax.scatter(
         light_group[:, 0], light_group[:, 1], light_group[:, 2],
-        c=light_group[:, 3], s=100, marker='.', cmap='coolwarm', vmin=-10, vmax=10
+        c=light_group[:, 3], s=100, marker='.', cmap='viridis', vmin=-10, vmax=10
     )
     
     # 绘制行人
     ax.scatter(
         people_group[:, 0], people_group[:, 1], people_group[:, 2],
-        c=people_group[:, 3], s=100, marker='.', cmap='coolwarm', vmin=-10, vmax=10
+        c=people_group[:, 3], s=100, marker='.', cmap='viridis', vmin=-10, vmax=10
     )
     
     # 设置坐标轴
@@ -181,7 +181,20 @@ def visualize_environment(car_group, plant_group, light_group, people_group):
     ax.set_xlabel('X (m)')
     ax.set_ylabel('Y (m)')
     ax.set_zlabel('Z (m)')
-    ax.grid(True)
+    
+    # 设置三个轴的比例一致（1m在三个轴上显示长度相同）
+    ax.set_box_aspect([28, 20, 20])  # 与实际空间尺寸比例一致
+    
+    # 设置网格间隔为1m
+    from matplotlib.ticker import MultipleLocator
+    ax.xaxis.set_major_locator(MultipleLocator(5))  # X轴主刻度每5m
+    ax.yaxis.set_major_locator(MultipleLocator(2))  # Y轴主刻度每2m
+    ax.zaxis.set_major_locator(MultipleLocator(2))  # Z轴主刻度每2m
+    ax.xaxis.set_minor_locator(MultipleLocator(1))  # X轴次刻度每1m
+    ax.yaxis.set_minor_locator(MultipleLocator(1))  # Y轴次刻度每1m
+    ax.zaxis.set_minor_locator(MultipleLocator(1))  # Z轴次刻度每1m
+    ax.grid(True, which='major', alpha=0.4, linestyle='-', linewidth=0.8)
+    ax.grid(True, which='minor', alpha=0.2, linestyle=':', linewidth=0.5)
     
     # 添加颜色条
     cbar = plt.colorbar(scatter_car, ax=ax, pad=0.1)
