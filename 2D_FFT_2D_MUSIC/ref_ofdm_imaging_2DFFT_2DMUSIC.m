@@ -1,42 +1,42 @@
-%% ±¾´úÂë²ÉÓÃÒ»¸öofdm×ÓÖ¡½øĞĞµãÔÆ³ÉÏñ
+%% æœ¬ä»£ç é‡‡ç”¨ä¸€ä¸ªofdmå­å¸§è¿›è¡Œç‚¹äº‘æˆåƒ
 clc;
 clear;
 close all;
 
-ref_space = 4;%Ã¿4¸öÊ±Ï¶²åÈëÒ»×éµ¼Æµ
-slot_num=16;%Ê±Ï¶Êı
-IFFT_length=2048;%×ÓÔØ²¨×ÊÔ´Êı
-carrier_count=200;%×ÓÔØ²¨Êı%%%%%%
-ref_carrier_count = IFFT_length/4;%µ¼ÆµÆµÓòÕ¼ÓÃ,comb4
+ref_space = 4;%æ¯4ä¸ªæ—¶éš™æ’å…¥ä¸€ç»„å¯¼é¢‘
+slot_num=16;%æ—¶éš™æ•°
+IFFT_length=2048;%å­è½½æ³¢èµ„æºæ•°
+carrier_count=200;%å­è½½æ³¢æ•°%%%%%%
+ref_carrier_count = IFFT_length/4;%å¯¼é¢‘é¢‘åŸŸå ç”¨,comb4
 comb_num = 4;
-symbols_per_carrier=224;%OFDM·ûºÅÊı,ÔÚ×ÓÔØ²¨´ø¿íÎª240kHzµÄÌõ¼şÏÂ£¬Ã¿¸ö×ÓÖ¡º¬ÓĞ16¸öÊ±Ï¶£¬16*14¸öofdm·ûºÅ£¬Ê¹ÓÃÒ»¸ö×ÓÖ¡
-ref_symbol_count = (slot_num/ref_space) * 12;%µ¼ÆµÊ±ÓòÕ¼ÓÃ,Ã¿4¸öÊ±Ï¶²åÈëÒ»×éPRS£¨12¸ö·ûºÅ£©
+symbols_per_carrier=224;%OFDMç¬¦å·æ•°,åœ¨å­è½½æ³¢å¸¦å®½ä¸º240kHzçš„æ¡ä»¶ä¸‹ï¼Œæ¯ä¸ªå­å¸§å«æœ‰16ä¸ªæ—¶éš™ï¼Œ16*14ä¸ªofdmç¬¦å·ï¼Œä½¿ç”¨ä¸€ä¸ªå­å¸§
+ref_symbol_count = (slot_num/ref_space) * 12;%å¯¼é¢‘æ—¶åŸŸå ç”¨,æ¯4ä¸ªæ—¶éš™æ’å…¥ä¸€ç»„PRSï¼ˆ12ä¸ªç¬¦å·ï¼‰
 
-bits_per_symbol=2;%Ã¿¸öµ÷ÖÆ·ûºÅµÄ±ÈÌØÊı£¨4QAM¶ÔÓ¦µÄ¾ÍÊÇ2£©
-% bits_per_symbol=3;%Ã¿¸öµ÷ÖÆ·ûºÅµÄ±ÈÌØÊı£¨8QAM¶ÔÓ¦µÄ¾ÍÊÇ3£©
-% bits_per_symbol=4;%Ã¿¸öµ÷ÖÆ·ûºÅµÄ±ÈÌØÊı£¨16QAM¶ÔÓ¦µÄ¾ÍÊÇ4£©
-% bits_per_symbol=5;%Ã¿¸öµ÷ÖÆ·ûºÅµÄ±ÈÌØÊı£¨32QAM¶ÔÓ¦µÄ¾ÍÊÇ5£©
-% bits_per_symbol=6;%Ã¿¸öµ÷ÖÆ·ûºÅµÄ±ÈÌØÊı£¨64QAM¶ÔÓ¦µÄ¾ÍÊÇ6£©
+bits_per_symbol=2;%æ¯ä¸ªè°ƒåˆ¶ç¬¦å·çš„æ¯”ç‰¹æ•°ï¼ˆ4QAMå¯¹åº”çš„å°±æ˜¯2ï¼‰
+% bits_per_symbol=3;%æ¯ä¸ªè°ƒåˆ¶ç¬¦å·çš„æ¯”ç‰¹æ•°ï¼ˆ8QAMå¯¹åº”çš„å°±æ˜¯3ï¼‰
+% bits_per_symbol=4;%æ¯ä¸ªè°ƒåˆ¶ç¬¦å·çš„æ¯”ç‰¹æ•°ï¼ˆ16QAMå¯¹åº”çš„å°±æ˜¯4ï¼‰
+% bits_per_symbol=5;%æ¯ä¸ªè°ƒåˆ¶ç¬¦å·çš„æ¯”ç‰¹æ•°ï¼ˆ32QAMå¯¹åº”çš„å°±æ˜¯5ï¼‰
+% bits_per_symbol=6;%æ¯ä¸ªè°ƒåˆ¶ç¬¦å·çš„æ¯”ç‰¹æ•°ï¼ˆ64QAMå¯¹åº”çš„å°±æ˜¯6ï¼‰
 
 
-PrefixRatio=1/4;%Ñ­»·Ç°×º±ÈÂÊ 1/6~1/4
-GI=PrefixRatio*IFFT_length ;%Ñ­»·Ç°×ºµÄ³¤¶È
-beta=1/32;%Ñ­»·ºó×º±ÈÂÊ
-GIP=beta*(IFFT_length+GI);%Ñ­»·ºó×º³¤¶È
-SNR=20; %ĞÅÔë±È£¬µ¥Î»ÊÇdB
+PrefixRatio=1/4;%å¾ªç¯å‰ç¼€æ¯”ç‡ 1/6~1/4
+GI=PrefixRatio*IFFT_length ;%å¾ªç¯å‰ç¼€çš„é•¿åº¦
+beta=1/32;%å¾ªç¯åç¼€æ¯”ç‡
+GIP=beta*(IFFT_length+GI);%å¾ªç¯åç¼€é•¿åº¦
+SNR=20; %ä¿¡å™ªæ¯”ï¼Œå•ä½æ˜¯dB
 
-%% »ù±¾²ÎÊıÉèÖÃ
-c = 3*10^8;  % µç´Å²¨´«²¥ËÙ¶È£¬ µ¥Î»m/s
-delta_f = 240*10^3;  % ÔØ²¨¼ä¸ô£¬µ¥Î»hz
-f_c = 70*10^9; % ĞÅºÅÖĞĞÄÆµÆ«, µ¥Î»hz, 25GHz,n258Æµ¶Î
-%% ================·¢ËÍÊı¾İÉú³É===================================
-disp('ÕıÔÚ¹¹½¨·¢ËÍÊı¾İÍ¨ĞÅĞÅÏ¢ÓëPRSË÷Òı......');
-baseband_out_length = IFFT_length * symbols_per_carrier * bits_per_symbol;%·¢ËÍ±ÈÌØ³¤¶È
-PSF_num = ref_carrier_count * ref_symbol_count * bits_per_symbol;% ²Î¿¼ĞÅºÅ±ÈÌØ³¤¶È
-Info_num = baseband_out_length - PSF_num;%Í¨ĞÅĞÅºÅ±ÈÌØ³¤¶È
-% ²Î¿¼ĞÅºÅREÆµÓòË÷Òı
+%% åŸºæœ¬å‚æ•°è®¾ç½®
+c = 3*10^8;  % ç”µç£æ³¢ä¼ æ’­é€Ÿåº¦ï¼Œ å•ä½m/s
+delta_f = 240*10^3;  % è½½æ³¢é—´éš”ï¼Œå•ä½hz
+f_c = 70*10^9; % ä¿¡å·ä¸­å¿ƒé¢‘å, å•ä½hz, 25GHz,n258é¢‘æ®µ
+%% ================å‘é€æ•°æ®ç”Ÿæˆ===================================
+disp('æ­£åœ¨æ„å»ºå‘é€æ•°æ®é€šä¿¡ä¿¡æ¯ä¸PRSç´¢å¼•......');
+baseband_out_length = IFFT_length * symbols_per_carrier * bits_per_symbol;%å‘é€æ¯”ç‰¹é•¿åº¦
+PSF_num = ref_carrier_count * ref_symbol_count * bits_per_symbol;% å‚è€ƒä¿¡å·æ¯”ç‰¹é•¿åº¦
+Info_num = baseband_out_length - PSF_num;%é€šä¿¡ä¿¡å·æ¯”ç‰¹é•¿åº¦
+% å‚è€ƒä¿¡å·REé¢‘åŸŸç´¢å¼•
 carriers_f = zeros(comb_num, ref_carrier_count);
-Info_carriers_f_1 = zeros(comb_num, IFFT_length - ref_carrier_count);%µÚÒ»ÀàÍ¨ĞÅĞÅÏ¢ÆµÓòË÷Òı
+Info_carriers_f_1 = zeros(comb_num, IFFT_length - ref_carrier_count);%ç¬¬ä¸€ç±»é€šä¿¡ä¿¡æ¯é¢‘åŸŸç´¢å¼•
 f_offset = [0,2,1,3];
 for i=1:comb_num
     offset = f_offset(i);
@@ -45,24 +45,24 @@ for i=1:comb_num
     end
     Info_carriers_f_1(i, :) = setdiff((1:IFFT_length), carriers_f(i,:));
 end
-Info_carriers_f_1_full = repmat(Info_carriers_f_1, (12/comb_num) * ref_space, 1);%µÚÒ»ÀàÍ¨ĞÅĞÅÏ¢ÆµÓòË÷Òı
+Info_carriers_f_1_full = repmat(Info_carriers_f_1, (12/comb_num) * ref_space, 1);%ç¬¬ä¸€ç±»é€šä¿¡ä¿¡æ¯é¢‘åŸŸç´¢å¼•
 carriers_f_full = repmat(carriers_f, (12/comb_num) * ref_space, 1);
-% ²Î¿¼ĞÅºÅREÊ±ÓòË÷Òı
+% å‚è€ƒä¿¡å·REæ—¶åŸŸç´¢å¼•
 symbols_t = zeros(1,ref_symbol_count);
 for i=1:slot_num/ref_space
     symbols_t(1,(i-1)*12+1:i*12) = 14*ref_space*(i-1)+2 : 14*ref_space*(i-1)+13;
 end
-Info_symbol_t_1 = symbols_t;%µÚÒ»ÀàÍ¨ĞÅĞÅÏ¢Ê±ÓòË÷Òı
+Info_symbol_t_1 = symbols_t;%ç¬¬ä¸€ç±»é€šä¿¡ä¿¡æ¯æ—¶åŸŸç´¢å¼•
 
 Info_carriers_f_2 = repmat((1:IFFT_length), (symbols_per_carrier - ref_symbol_count), 1);
-Info_symbol_t_2 = setdiff((1:slot_num*14), symbols_t);% µÚ¶şÀàÍ¨ĞÅ×ÊÔ´Ê±ÓòË÷Òı
+Info_symbol_t_2 = setdiff((1:slot_num*14), symbols_t);% ç¬¬äºŒç±»é€šä¿¡èµ„æºæ—¶åŸŸç´¢å¼•
 
-% ²Î¿¼ĞÅºÅË÷Òı
+% å‚è€ƒä¿¡å·ç´¢å¼•
 ref_t_f_index = zeros(size(symbols_t,2), size(carriers_f_full,2), 2);
 ref_t_f_index(:, :, 1)=repmat(symbols_t', 1, ref_carrier_count);
 ref_t_f_index(:, :, 2)=carriers_f_full;
 
-% Í¨ĞÅĞÅºÅË÷Òı
+% é€šä¿¡ä¿¡å·ç´¢å¼•
 % class 1
 Info_t_f_index_1 = zeros(size(Info_symbol_t_1,2), size(Info_carriers_f_1_full,2), 2);
 Info_t_f_index_1(:, :, 1)=repmat(Info_symbol_t_1', 1, (IFFT_length - ref_carrier_count));
@@ -71,26 +71,26 @@ Info_t_f_index_1(:, :, 2)=Info_carriers_f_1_full;
 Info_t_f_index_2 = zeros(size(Info_symbol_t_2,2), size(Info_carriers_f_2,2), 2);
 Info_t_f_index_2(:, :, 1)=repmat(Info_symbol_t_2', 1, IFFT_length);
 Info_t_f_index_2(:, :, 2)=Info_carriers_f_2;
-disp('·¢ËÍÊı¾İÍ¨ĞÅĞÅÏ¢ÓëPRSË÷Òı¹¹½¨Íê±Ï£¡');
-%% ***************Ä£ÄâËæ»úÍ¨ĞÅĞÅÏ¢***************
-% baseband_out=zeros(1,baseband_out_length);%´¿0ĞòÁĞ
+disp('å‘é€æ•°æ®é€šä¿¡ä¿¡æ¯ä¸PRSç´¢å¼•æ„å»ºå®Œæ¯•ï¼');
+%% ***************æ¨¡æ‹Ÿéšæœºé€šä¿¡ä¿¡æ¯***************
+% baseband_out=zeros(1,baseband_out_length);%çº¯0åºåˆ—
 
-%% ***************Ä£ÄâËæ»úÍ¨ĞÅĞÅÏ¢***************
-% baseband_out=ones(1,baseband_out_length);%´¿1ĞòÁĞ
+%% ***************æ¨¡æ‹Ÿéšæœºé€šä¿¡ä¿¡æ¯***************
+% baseband_out=ones(1,baseband_out_length);%çº¯1åºåˆ—
 
-%% ***************Ä£ÄâËæ»úÍ¨ĞÅĞÅÏ¢***************
-% rand( 'twister',0); %Ëæ»úÖÖ×Ó£¬¿ÉÒÔÈÃÃ¿´ÎÉú³ÉµÄËæ»úÊıÓĞ¹æÂÉ£¬ÓĞÁËÕâ¾ä»°Ã¿´ÎÉú³ÉµÄËæ»úÊı¾ßÓĞÒ»ÑùµÄ¹æÂÉ
-% baseband_out=round(rand(1,baseband_out_length));%Éú³ÉËæ»úÊı£¨Ä£ÄâËæ»úµÄÍ¨ĞÅÊı¾İ£©
-%% ***************mĞòÁĞÄ£ÄâµÄËæ»úÍ¨ĞÅĞÅÏ¢***************
-disp('ÕıÔÚÊ¹ÓÃmĞòÁĞÌî³äÍ¨ĞÅĞÅÏ¢Êı¾İ±ÈÌØ......');
+%% ***************æ¨¡æ‹Ÿéšæœºé€šä¿¡ä¿¡æ¯***************
+% rand( 'twister',0); %éšæœºç§å­ï¼Œå¯ä»¥è®©æ¯æ¬¡ç”Ÿæˆçš„éšæœºæ•°æœ‰è§„å¾‹ï¼Œæœ‰äº†è¿™å¥è¯æ¯æ¬¡ç”Ÿæˆçš„éšæœºæ•°å…·æœ‰ä¸€æ ·çš„è§„å¾‹
+% baseband_out=round(rand(1,baseband_out_length));%ç”Ÿæˆéšæœºæ•°ï¼ˆæ¨¡æ‹Ÿéšæœºçš„é€šä¿¡æ•°æ®ï¼‰
+%% ***************måºåˆ—æ¨¡æ‹Ÿçš„éšæœºé€šä¿¡ä¿¡æ¯***************
+disp('æ­£åœ¨ä½¿ç”¨måºåˆ—å¡«å……é€šä¿¡ä¿¡æ¯æ•°æ®æ¯”ç‰¹......');
 Tx_matric = zeros(IFFT_length*bits_per_symbol,symbols_per_carrier);
 for i = 1:symbols_per_carrier
-    Order_number=12; %mĞòÁĞµÄ½×ÊıµÈÓÚ10£¬mĞòÁĞ³¤¶ÈÎª2^10 - 1
+    Order_number=12; %måºåˆ—çš„é˜¶æ•°ç­‰äº10ï¼Œmåºåˆ—é•¿åº¦ä¸º2^10 - 1
     mg = zeros(IFFT_length*bits_per_symbol,1);
-%    Éú³ÉmĞòÁĞ±¾Ô´¶àÏîÊ½µÄÏµÊı£¬¿ÉÒÔÓÃprimpoly(Order_number,'all')µÃµ½£»
-    tmp = primpoly(Order_number,'all','nodisplay'); %Éú³ÉËùÓĞ¿ÉĞĞµÄmĞòÁĞµÄ±¾Ô´¶àÏîÊ½ÏµÊı£¬½×ÊıÔ½´ó£¬ÊıÔ½¶à(³£ÊıÏîÏµÊı²»¿¼ÂÇ)
-    cur_tmp = int32(tmp(1)); %Ñ¡ÔñµÚÒ»¸ö
-    % Ê®½øÖÆ»¯Îª¶ş½øÖÆ
+%    ç”Ÿæˆmåºåˆ—æœ¬æºå¤šé¡¹å¼çš„ç³»æ•°ï¼Œå¯ä»¥ç”¨primpoly(Order_number,'all')å¾—åˆ°ï¼›
+    tmp = primpoly(Order_number,'all','nodisplay'); %ç”Ÿæˆæ‰€æœ‰å¯è¡Œçš„måºåˆ—çš„æœ¬æºå¤šé¡¹å¼ç³»æ•°ï¼Œé˜¶æ•°è¶Šå¤§ï¼Œæ•°è¶Šå¤š(å¸¸æ•°é¡¹ç³»æ•°ä¸è€ƒè™‘)
+    cur_tmp = int32(tmp(1)); %é€‰æ‹©ç¬¬ä¸€ä¸ª
+    % åè¿›åˆ¶åŒ–ä¸ºäºŒè¿›åˆ¶
     f = zeros(1,Order_number+2);
     for j = 1:Order_number+1
         if mod(cur_tmp,2) == 1
@@ -104,12 +104,12 @@ for i = 1:symbols_per_carrier
     Tx_matric(:,i) = mg;
 end
 Tx_matric = Tx_matric';
-disp('Í¨ĞÅĞÅÏ¢Êı¾İ±ÈÌØÌî³äÍê±Ï£¡');
-%% ****************goldĞòÁĞÄ£ÄâPRSĞÅÏ¢*****************************
-disp('ÕıÔÚÊ¹ÓÃgoldĞòÁĞÌî³äPRSÊı¾İ±ÈÌØ......');
+disp('é€šä¿¡ä¿¡æ¯æ•°æ®æ¯”ç‰¹å¡«å……å®Œæ¯•ï¼');
+%% ****************goldåºåˆ—æ¨¡æ‹ŸPRSä¿¡æ¯*****************************
+disp('æ­£åœ¨ä½¿ç”¨goldåºåˆ—å¡«å……PRSæ•°æ®æ¯”ç‰¹......');
     for m=1:ref_symbol_count
         n_slot=ceil(symbols_t(m)/14)-1;
-        seq=goldseq(n_slot,symbols_t(m)-1);%Î±Ëæ»úĞòÁĞ
+        seq=goldseq(n_slot,symbols_t(m)-1);%ä¼ªéšæœºåºåˆ—
         for k=1:ref_carrier_count
            Tx_matric(ref_t_f_index(m,k,1), 2*ref_t_f_index(m,k,2)-1) = seq(2*ref_t_f_index(m,k,2)-1);
            Tx_matric(ref_t_f_index(m,k,1), 2*ref_t_f_index(m,k,2)) = seq(2*ref_t_f_index(m,k,2));
@@ -117,10 +117,10 @@ disp('ÕıÔÚÊ¹ÓÃgoldĞòÁĞÌî³äPRSÊı¾İ±ÈÌØ......');
     end
 
 baseband_out = reshape(Tx_matric',1,baseband_out_length); 
-disp('PRSÊı¾İ±ÈÌØÌî³äÍê±Ï......');
-%% *************************Êı¾İµ÷ÖÆ****************************
-% ==============4QAMµ÷ÖÆ====================================
-disp('ÕıÔÚ½øĞĞÊı¾İµ÷ÖÆ£¬ºÄÊ±½Ï³¤,ÇëÉÔºó......');
+disp('PRSæ•°æ®æ¯”ç‰¹å¡«å……å®Œæ¯•......');
+%% *************************æ•°æ®è°ƒåˆ¶****************************
+% ==============4QAMè°ƒåˆ¶====================================
+disp('æ­£åœ¨è¿›è¡Œæ•°æ®è°ƒåˆ¶ï¼Œè€—æ—¶è¾ƒé•¿,è¯·ç¨å......');
 complex_carrier_matrix=qam4(baseband_out);
 complex_carrier_matrix=reshape(complex_carrier_matrix',IFFT_length, symbols_per_carrier)';%symbols_per_carrier*carrier_count
  
@@ -129,7 +129,7 @@ plot(complex_carrier_matrix,'*r');
 title('star map of Tx_data');
 axis([-2, 2, -2, 2]);
 grid on
-% % ==============8QAMµ÷ÖÆ====================================
+% % ==============8QAMè°ƒåˆ¶====================================
 % complex_carrier_matrix=qam8(baseband_out);
 % complex_carrier_matrix=reshape(complex_carrier_matrix',carrier_count,symbols_per_carrier)';%symbols_per_carrier*carrier_count
 %  
@@ -140,7 +140,7 @@ grid on
 % grid on
 
 
-% % ==============16QAMµ÷ÖÆ====================================
+% % ==============16QAMè°ƒåˆ¶====================================
 % complex_carrier_matrix=qam16(baseband_out);
 % complex_carrier_matrix=reshape(complex_carrier_matrix',carrier_count,symbols_per_carrier)';%symbols_per_carrier*carrier_count
 %  
@@ -150,7 +150,7 @@ grid on
 % axis([-4, 4, -4, 4]);
 % grid on
 
-% % ==============32QAMµ÷ÖÆ====================================
+% % ==============32QAMè°ƒåˆ¶====================================
 % complex_carrier_matrix=qam32(baseband_out);
 % complex_carrier_matrix=reshape(complex_carrier_matrix',carrier_count,symbols_per_carrier)';%symbols_per_carrier*carrier_count
 %  
@@ -160,7 +160,7 @@ grid on
 % axis([-8, 8, -8, 8]);
 % grid on
 
-% % ==============64QAMµ÷ÖÆ====================================
+% % ==============64QAMè°ƒåˆ¶====================================
 % complex_carrier_matrix=qam64(baseband_out);
 % complex_carrier_matrix=reshape(complex_carrier_matrix',carrier_count,symbols_per_carrier)';%symbols_per_carrier*carrier_count
 %  
@@ -170,9 +170,9 @@ grid on
 % axis([-8, 8, -8, 8]);
 % grid on
 
-disp('µ÷ÖÆÍê±Ï£¡');
+disp('è°ƒåˆ¶å®Œæ¯•ï¼');
 %% =================IFFT===========================
-disp('ÕıÔÚÊ¹ÓÃIFFTÉú³ÉÊ±ÓòOFDM·ûºÅ......');
+disp('æ­£åœ¨ä½¿ç”¨IFFTç”Ÿæˆæ—¶åŸŸOFDMç¬¦å·......');
 IFFT_modulation=complex_carrier_matrix;
 signal_after_IFFT=ifft(IFFT_modulation,IFFT_length,2);%ifft
 
@@ -184,14 +184,14 @@ grid on;
 ylabel('Amplitude');
 xlabel('Time');
 title('OFDM Time Signal, One Symbol Period');
-disp('Ê±ÓòOFDM·ûºÅÉú³ÉÍê±Ï£¡');
-%% =====================¼ÓÑ­»·Ç°×ºCPºÍºó×º=========================
-disp('ÕıÔÚÌí¼ÓÑ­»·Ç°×ººó×º......');
+disp('æ—¶åŸŸOFDMç¬¦å·ç”Ÿæˆå®Œæ¯•ï¼');
+%% =====================åŠ å¾ªç¯å‰ç¼€CPå’Œåç¼€=========================
+disp('æ­£åœ¨æ·»åŠ å¾ªç¯å‰ç¼€åç¼€......');
 time_wave_matrix_cp=zeros(symbols_per_carrier,IFFT_length+GI+GIP);%GI=512,GIP=80
 for k=1:symbols_per_carrier    %224
     time_wave_matrix_cp(k,GI+1:GI+IFFT_length)=signal_after_IFFT(k,:);
-    time_wave_matrix_cp(k,1:GI)=signal_after_IFFT(k,(IFFT_length-GI+1):IFFT_length);%¼ÓÑ­»·Ç°×ºCP,Ç°×ºÊÇ·ûºÅºóÃæµÄ²¿·Ö
-    time_wave_matrix_cp(k,(IFFT_length+GI+1):(IFFT_length+GI+GIP))=signal_after_IFFT(k,1:GIP);%¼ÓÑ­»·ºó×º£¬ºó×ºÊÇ·ûºÅÇ°ÃæµÄ²¿·Ö
+    time_wave_matrix_cp(k,1:GI)=signal_after_IFFT(k,(IFFT_length-GI+1):IFFT_length);%åŠ å¾ªç¯å‰ç¼€CP,å‰ç¼€æ˜¯ç¬¦å·åé¢çš„éƒ¨åˆ†
+    time_wave_matrix_cp(k,(IFFT_length+GI+1):(IFFT_length+GI+GIP))=signal_after_IFFT(k,1:GIP);%åŠ å¾ªç¯åç¼€ï¼Œåç¼€æ˜¯ç¬¦å·å‰é¢çš„éƒ¨åˆ†
 end
 subplot(3,1,2);
 plot(0:length(time_wave_matrix_cp)-1,time_wave_matrix_cp(2,:));
@@ -200,12 +200,12 @@ grid on;
 ylabel('Amplitude');
 xlabel('Time');
 title('OFDM Time Signal with CP, One Symbol Period');
-disp('Ñ­»·Ç°×ººó×ºÌí¼ÓÍê±Ï£¡');
-%% ***************OFDM·ûºÅ¼Ó´°²Ù×÷******************
-disp('ÕıÔÚÊ±Óò¼Ó´°²¢½øĞĞ²¢´®×ª»»......');
+disp('å¾ªç¯å‰ç¼€åç¼€æ·»åŠ å®Œæ¯•ï¼');
+%% ***************OFDMç¬¦å·åŠ çª—æ“ä½œ******************
+disp('æ­£åœ¨æ—¶åŸŸåŠ çª—å¹¶è¿›è¡Œå¹¶ä¸²è½¬æ¢......');
 windowed_time_wave_matrix_cp=zeros(symbols_per_carrier,IFFT_length+GI+GIP);
 for i = 1:symbols_per_carrier %224
-    windowed_time_wave_matrix_cp(i,:) = time_wave_matrix_cp(i,:).*rcoswindow(beta,IFFT_length+GI)';%ÉıÓàÏÒ¹ö½µÏµÊı=Ñ­»·ºó×º±ÈÂÊ
+    windowed_time_wave_matrix_cp(i,:) = time_wave_matrix_cp(i,:).*rcoswindow(beta,IFFT_length+GI)';%å‡ä½™å¼¦æ»šé™ç³»æ•°=å¾ªç¯åç¼€æ¯”ç‡
 end  
 subplot(3,1,3);
 plot(0:IFFT_length-1+GI+GIP,windowed_time_wave_matrix_cp(2,:));
@@ -215,13 +215,13 @@ ylabel('Amplitude');
 xlabel('Time');
 title('OFDM Time Signal Apply a Window , One Symbol Period');
   
-% ²¢´®×ª»»£¬¼Ó´°µÄofdm·ûºÅ´«ÊäÊ±µ±Ç°·ûºÅµÄºó×ºÓëÏÂÒ»¸ö·ûºÅµÄÇ°×ºÖØºÏ
+% å¹¶ä¸²è½¬æ¢ï¼ŒåŠ çª—çš„ofdmç¬¦å·ä¼ è¾“æ—¶å½“å‰ç¬¦å·çš„åç¼€ä¸ä¸‹ä¸€ä¸ªç¬¦å·çš„å‰ç¼€é‡åˆ
 windowed_Tx_data=zeros(1,symbols_per_carrier*(IFFT_length+GI)+GIP);
 windowed_Tx_data(1:IFFT_length+GI+GIP)=windowed_time_wave_matrix_cp(1,:);
 for i = 1:symbols_per_carrier-1 
-    windowed_Tx_data((IFFT_length+GI)*i+1:(IFFT_length+GI)*(i+1)+GIP)=windowed_time_wave_matrix_cp(i+1,:);%¼Ó´°£¬ÇÒºó×ºÓëÇ°×ºÖØµş
+    windowed_Tx_data((IFFT_length+GI)*i+1:(IFFT_length+GI)*(i+1)+GIP)=windowed_time_wave_matrix_cp(i+1,:);%åŠ çª—ï¼Œä¸”åç¼€ä¸å‰ç¼€é‡å 
 end
-%¼Ó´°ºó×ºÓëÇ°×ºÖØµş
+%åŠ çª—åç¼€ä¸å‰ç¼€é‡å 
 figure
 temp_time2 =symbols_per_carrier*(IFFT_length+GI)+GIP;
 plot(0:temp_time2-1,windowed_Tx_data);
@@ -229,112 +229,112 @@ grid on
 ylabel('Amplitude (volts)')
 xlabel('Time (samples)')
 title('OFDM windowed_Tx_data')
-disp('´®ĞĞ·¢ËÍĞÅºÅÉú³É³É¹¦£¡');
-%% ÉÏ±äÆµ
+disp('ä¸²è¡Œå‘é€ä¿¡å·ç”ŸæˆæˆåŠŸï¼');
+%% ä¸Šå˜é¢‘
 
-%% ====================Ìí¼ÓÔëÉù============================================
-disp('ÕıÔÚÌí¼ÓAWGN......');
-Tx_signal_power = var(windowed_Tx_data);%µÃµ½·¢ÉäÊı¾İ¹¦ÂÊ
-linear_SNR=10^(SNR/10);%ĞÅÔë±È×ª»»³ÉintĞÍ
-noise_sigma=Tx_signal_power/linear_SNR;%ÔëÉù¹¦ÂÊ
-noise_scale_factor = sqrt(noise_sigma);%ÔëÉù±ê×¼²î
-noise=randn(1,((symbols_per_carrier)*(IFFT_length+GI))+GIP)*noise_scale_factor;%Ëæ»úÔëÉù£¬randn¾ùÖµÎª0£¬·½²î¦Ò^2 = 1£¬±ê×¼²î¦Ò = 1µÄÕıÌ¬·Ö²¼µÄËæ»úÊı£¬D£¨cX£©=c^2 * D£¨X£©
+%% ====================æ·»åŠ å™ªå£°============================================
+disp('æ­£åœ¨æ·»åŠ AWGN......');
+Tx_signal_power = var(windowed_Tx_data);%å¾—åˆ°å‘å°„æ•°æ®åŠŸç‡
+linear_SNR=10^(SNR/10);%ä¿¡å™ªæ¯”è½¬æ¢æˆintå‹
+noise_sigma=Tx_signal_power/linear_SNR;%å™ªå£°åŠŸç‡
+noise_scale_factor = sqrt(noise_sigma);%å™ªå£°æ ‡å‡†å·®
+noise=randn(1,((symbols_per_carrier)*(IFFT_length+GI))+GIP)*noise_scale_factor;%éšæœºå™ªå£°ï¼Œrandnå‡å€¼ä¸º0ï¼Œæ–¹å·®Ïƒ^2 = 1ï¼Œæ ‡å‡†å·®Ïƒ = 1çš„æ­£æ€åˆ†å¸ƒçš„éšæœºæ•°ï¼ŒDï¼ˆcXï¼‰=c^2 * Dï¼ˆXï¼‰
 %noise=wgn(1,length(windowed_Tx_data),noise_sigma,'complex');
-Rx_data=windowed_Tx_data+noise;%½ÓÊÕÊı¾İ
-disp('AWGNÌí¼ÓÍê±Ï£¡');
-%% ÏÂ±äÆµ
+Rx_data=windowed_Tx_data+noise;%æ¥æ”¶æ•°æ®
+disp('AWGNæ·»åŠ å®Œæ¯•ï¼');
+%% ä¸‹å˜é¢‘
 
-%% ²»¿¼ÂÇ¶à¾¶£¬ÍêÃÀÍ¬²½£¬AWGN
-%% =====================´®²¢×ª»»ÓëÑ­»·Ç°ºó×ºÈ¥³ı==========================================
-disp('ÕıÔÚ½øĞĞ´®²¢×ª»»ÓëÑ­»·Ç°ºó×ºÏû³ı......');
+%% ä¸è€ƒè™‘å¤šå¾„ï¼Œå®Œç¾åŒæ­¥ï¼ŒAWGN
+%% =====================ä¸²å¹¶è½¬æ¢ä¸å¾ªç¯å‰åç¼€å»é™¤==========================================
+disp('æ­£åœ¨è¿›è¡Œä¸²å¹¶è½¬æ¢ä¸å¾ªç¯å‰åç¼€æ¶ˆé™¤......');
 Rx_data_matrix=zeros(symbols_per_carrier,IFFT_length+GI+GIP);
-%´®²¢×ª»»
+%ä¸²å¹¶è½¬æ¢
 for i=1:symbols_per_carrier
-    Rx_data_matrix(i,:)=Rx_data(1,(i-1)*(IFFT_length+GI)+1:i*(IFFT_length+GI)+GIP);%½«½ÓÊÕĞÅºÅ·ÖÎª224¸ö·ûºÅ
+    Rx_data_matrix(i,:)=Rx_data(1,(i-1)*(IFFT_length+GI)+1:i*(IFFT_length+GI)+GIP);%å°†æ¥æ”¶ä¿¡å·åˆ†ä¸º224ä¸ªç¬¦å·
 end
-%Ñ­»·Ç°ºó×ºÈ¥³ı
-Rx_data_complex_matrix=Rx_data_matrix(:,GI+1:IFFT_length+GI);%È¥³ıCPºÍCPI
-disp('²¢ĞĞĞÅºÅ»Ö¸´³É¹¦£¡');
+%å¾ªç¯å‰åç¼€å»é™¤
+Rx_data_complex_matrix=Rx_data_matrix(:,GI+1:IFFT_length+GI);%å»é™¤CPå’ŒCPI
+disp('å¹¶è¡Œä¿¡å·æ¢å¤æˆåŠŸï¼');
 %% =================FFT=================================
-disp('ÕıÔÚÊ¹ÓÃFFT»Ö¸´ÆµÓòĞÅÏ¢......');
+disp('æ­£åœ¨ä½¿ç”¨FFTæ¢å¤é¢‘åŸŸä¿¡æ¯......');
 Y1=fft(Rx_data_complex_matrix,IFFT_length,2);
-% ÆµÓòĞÅÏ¢
-Rx_carriers=Y1;%ÌáÈ¡Êı²¿·Ö
-Rx_phase =angle(Rx_carriers);%»ñµÃÏàÎ»ĞÅÏ¢
-Rx_mag = abs(Rx_carriers);%»ñµÃ·ù¶ÈĞÅÏ¢
+% é¢‘åŸŸä¿¡æ¯
+Rx_carriers=Y1;%æå–æ•°éƒ¨åˆ†
+Rx_phase =angle(Rx_carriers);%è·å¾—ç›¸ä½ä¿¡æ¯
+Rx_mag = abs(Rx_carriers);%è·å¾—å¹…åº¦ä¿¡æ¯
 figure
-polar(Rx_phase, Rx_mag,'bd');%½ÓÊÕÊı¾İµÄÏàÎ»ºÍ·ù¶ÈĞÅÏ¢×÷Í¼
+polar(Rx_phase, Rx_mag,'bd');%æ¥æ”¶æ•°æ®çš„ç›¸ä½å’Œå¹…åº¦ä¿¡æ¯ä½œå›¾
 title('Phase and mapulitude of Rx_data');
 %======================================================================
-% »æÍ¼·½Ê½1
-[M, N]=pol2cart(Rx_phase, Rx_mag); %¼«×ø±ê×ªµÑ¿¨¶û×ø±ê
-Rx_complex_carrier_matrix = complex(M, N);%µÃµ½¸´ĞÅºÅ
+% ç»˜å›¾æ–¹å¼1
+[M, N]=pol2cart(Rx_phase, Rx_mag); %æåæ ‡è½¬ç¬›å¡å°”åæ ‡
+Rx_complex_carrier_matrix = complex(M, N);%å¾—åˆ°å¤ä¿¡å·
 figure
-plot(Rx_complex_carrier_matrix,'*r');%½ÓÊÕĞÅºÅµÄĞÇ×øÍ¼
+plot(Rx_complex_carrier_matrix,'*r');%æ¥æ”¶ä¿¡å·çš„æ˜Ÿåå›¾
 title('star map of Rx_data');
 axis([-4, 4, -4, 4]);
 grid on
-% % »æÍ¼·½Ê½2
+% % ç»˜å›¾æ–¹å¼2
 % figure
-% plot(Rx_carriers,'*r');%½ÓÊÕĞÅºÅµÄĞÇ×øÍ¼
+% plot(Rx_carriers,'*r');%æ¥æ”¶ä¿¡å·çš„æ˜Ÿåå›¾
 % title('star map of Rx_data');
 % axis([-4, 4, -4, 4]);
 % grid on
-disp('ÆµÓòĞÅÏ¢»Ö¸´³É¹¦£¡');
-%% ********OFDMÍ¨ĞÅĞÅºÅ´¦Àí***********************************************************
-disp('ÕıÔÚ½âµ÷»ñÈ¡Ô­Ê¼Êı¾İ±ÈÌØ......');
-% ±¾´úÂë¶àÌìÏß½ÓÊÕµ«ÊÇÖ»½øĞĞÁËµ¥ÌìÏß½âÂë
-%====================4qam½âÂë==================================================
+disp('é¢‘åŸŸä¿¡æ¯æ¢å¤æˆåŠŸï¼');
+%% ********OFDMé€šä¿¡ä¿¡å·å¤„ç†***********************************************************
+disp('æ­£åœ¨è§£è°ƒè·å–åŸå§‹æ•°æ®æ¯”ç‰¹......');
+% æœ¬ä»£ç å¤šå¤©çº¿æ¥æ”¶ä½†æ˜¯åªè¿›è¡Œäº†å•å¤©çº¿è§£ç 
+%====================4qamè§£ç ==================================================
 Rx_serial_complex_symbols = reshape(Rx_complex_carrier_matrix', 1, size(Rx_complex_carrier_matrix,1)*size(Rx_complex_carrier_matrix,2))';
 Rx_decoded_binary_symbols=demoduqam4(Rx_serial_complex_symbols);
 
-% %====================8qam½âÂë==================================================
+% %====================8qamè§£ç ==================================================
 % Rx_serial_complex_symbols = reshape(Rx_complex_carrier_matrix',size(Rx_complex_carrier_matrix, 1)*size(Rx_complex_carrier_matrix,2),1)';
 % Rx_decoded_binary_symbols=demoduqam8(Rx_serial_complex_symbols);
 
-% %====================16qam½âÂë==================================================
+% %====================16qamè§£ç ==================================================
 % Rx_serial_complex_symbols = reshape(Rx_complex_carrier_matrix',size(Rx_complex_carrier_matrix, 1)*size(Rx_complex_carrier_matrix,2),1)';
 % Rx_decoded_binary_symbols=demoduqam16(Rx_serial_complex_symbols);
 
-% %====================32qam½âÂë==================================================
+% %====================32qamè§£ç ==================================================
 % Rx_serial_complex_symbols = reshape(Rx_complex_carrier_matrix',size(Rx_complex_carrier_matrix, 1)*size(Rx_complex_carrier_matrix,2),1)';
 % Rx_decoded_binary_symbols=demoduqam32(Rx_serial_complex_symbols);
 
-% %====================64qam½âÂë==================================================
+% %====================64qamè§£ç ==================================================
 % Rx_serial_complex_symbols = reshape(Rx_complex_carrier_matrix',size(Rx_complex_carrier_matrix, 1)*size(Rx_complex_carrier_matrix,2),1)';
 % Rx_decoded_binary_symbols=demoduqam64(Rx_serial_complex_symbols);
 
 
 %============================================================
 baseband_in = Rx_decoded_binary_symbols;
-disp('½âµ÷Íê±Ï£¡');
+disp('è§£è°ƒå®Œæ¯•ï¼');
 figure
 subplot(2,1,1);
 stem(baseband_out(1:100));
 subplot(2,1,2);
 stem(baseband_in(1:100));
-title('sending beta£¬ 1-200');
-%================¼ÆËãÎó±ÈÌØÂÊ=============================================
+title('sending betaï¼Œ 1-200');
+%================è®¡ç®—è¯¯æ¯”ç‰¹ç‡=============================================
 bit_errors=find(baseband_in ~=baseband_out);
 bit_error_count = size(bit_errors, 2);
-disp('ÎóÂëÂÊÎª£º');
+disp('è¯¯ç ç‡ä¸ºï¼š');
 BER=bit_error_count/baseband_out_length
-%% ********Ä£ÄâÊ±ÑÓ¡¢ËÙ¶ÈĞÅÏ¢***************************************
-% ±¾ÖÊÊÇÒ»¸ö»ù´ø´«Êä£¬²¢Ã»ÓĞÉÏÏÂ±äÆµ
-%*******************¾àÀëºÍËÙ¶È²ÎÊıÉèÖÃ*******************
-disp('ÕıÔÚÄ£ÄâËÙ¶ÈÊ±ÑÓÓë·½Î»ĞÅÏ¢......');
-% É¢Éä»·¾³
+%% ********æ¨¡æ‹Ÿæ—¶å»¶ã€é€Ÿåº¦ä¿¡æ¯***************************************
+% æœ¬è´¨æ˜¯ä¸€ä¸ªåŸºå¸¦ä¼ è¾“ï¼Œå¹¶æ²¡æœ‰ä¸Šä¸‹å˜é¢‘
+%*******************è·ç¦»å’Œé€Ÿåº¦å‚æ•°è®¾ç½®*******************
+disp('æ­£åœ¨æ¨¡æ‹Ÿé€Ÿåº¦æ—¶å»¶ä¸æ–¹ä½ä¿¡æ¯......');
+% æ•£å°„ç¯å¢ƒ
 environment_point=environment();
-% »ùÕ¾ÌìÏßÎ»ÖÃ
+% åŸºç«™å¤©çº¿ä½ç½®
 base_pos=[14,100,20];
-% »·¾³É¢ÉäµãĞÅÏ¢
+% ç¯å¢ƒæ•£å°„ç‚¹ä¿¡æ¯
 point_info=zeros(size(environment_point,1),4);
 base_pos_full=repmat(base_pos,size(environment_point,1),1);
-% ¾àÀë
+% è·ç¦»
 R_info=((environment_point(:,1)-base_pos_full(:,1)).^2+(environment_point(:,2)-base_pos_full(:,2)).^2+(environment_point(:,3)-base_pos_full(:,3)).^2).^(1/2);
-% ËÙ¶È
+% é€Ÿåº¦
 V_info=environment_point(:,4);
-% ½Ç¶È
+% è§’åº¦
 xoy_dis=((environment_point(:,1)-base_pos_full(:,1)).^2+(environment_point(:,2)-base_pos_full(:,2)).^2).^(1/2);
 A1_info=acos((base_pos_full(:,1)-environment_point(:,1))./xoy_dis);
 A2_info=acos((base_pos_full(:,3)-environment_point(:,3))./R_info);
@@ -342,70 +342,70 @@ point_info(:,1)=R_info;
 point_info(:,2)=V_info;
 point_info(:,3)=A1_info;
 point_info(:,4)=A2_info;
-disp('ËÙ¶È¡¢Ê±ÑÓ¡¢·½Î»ĞÅÏ¢Ä£ÄâÍê±Ï£¡');
-%% »Ø²¨ĞÅºÅ¹¹½¨£¨ËÙ¶È¾àÀë£©
-disp('ÕıÔÚÉú³Éµ¥ÌìÏß»Ø²¨ĞÅºÅ£¬¿ÉÄÜºÄÊ±½Ï³¤£¬ÇëÉÔºó......');
-% ¹¹½¨ĞéÄâ½ÓÊÕÕóÁĞ£¬²ÉÓÃ4·¢64*64½ÓÊÕ£¬ĞéÄâ½ÓÊÕÕóÁĞÎª256*256
-M = 16;         %x·½ÏòÕóÔ´Êı
-N = 16;        %y·½ÏòÕóÔ´Êı
-lambda = c/f_c;   %ofdmĞÅºÅ²¨³¤
-K_sub = 8;    %×ÓÕóÔªÊıÄ¿
-d = lambda/2;%ÌìÏßÕóÔª¼ä¾à
-%*******************¹¹½¨kr¡¢kd¡¢ka ÏòÁ¿*******************
+disp('é€Ÿåº¦ã€æ—¶å»¶ã€æ–¹ä½ä¿¡æ¯æ¨¡æ‹Ÿå®Œæ¯•ï¼');
+%% å›æ³¢ä¿¡å·æ„å»ºï¼ˆé€Ÿåº¦è·ç¦»ï¼‰
+disp('æ­£åœ¨ç”Ÿæˆå•å¤©çº¿å›æ³¢ä¿¡å·ï¼Œå¯èƒ½è€—æ—¶è¾ƒé•¿ï¼Œè¯·ç¨å......');
+% æ„å»ºè™šæ‹Ÿæ¥æ”¶é˜µåˆ—ï¼Œé‡‡ç”¨4å‘64*64æ¥æ”¶ï¼Œè™šæ‹Ÿæ¥æ”¶é˜µåˆ—ä¸º256*256
+M = 16;         %xæ–¹å‘é˜µæºæ•°
+N = 16;        %yæ–¹å‘é˜µæºæ•°
+lambda = c/f_c;   %ofdmä¿¡å·æ³¢é•¿
+K_sub = 8;    %å­é˜µå…ƒæ•°ç›®
+d = lambda/2;%å¤©çº¿é˜µå…ƒé—´è·
+%*******************æ„å»ºkrã€kdã€ka å‘é‡*******************
 T_OFDM = 1/delta_f * (1 + PrefixRatio);
-% ´´½¨¶àÌìÏß½ÓÊÕ¾ØÕó
+% åˆ›å»ºå¤šå¤©çº¿æ¥æ”¶çŸ©é˜µ
 % multi_Rx_complex_carrier_matrix_radar_RX1 = zeros(size(Rx_complex_carrier_matrix));
 multi_Rx_complex_carrier_matrix_radar = zeros(symbols_per_carrier, IFFT_length, M, N);
 
-win = waitbar(0, '»Ø²¨¼ÆËãÖĞ...');
+win = waitbar(0, 'å›æ³¢è®¡ç®—ä¸­...');
 tCount1 = 0;
 for tgt_index = 1:size(point_info, 1)
-    % ¼ÆÊ±³õÊ¼»¯
+    % è®¡æ—¶åˆå§‹åŒ–
     t00 = tic;
-    % »ñÈ¡µ¥Ä¿±êĞÅÏ¢
-    R = point_info(tgt_index, 1); % Ä¿±ê¾àÀë
-    V = point_info(tgt_index, 2); % Ä¿±êËÙ¶È
-    theta = point_info(tgt_index, 3); % Ä¿±ê·½Î»½Ç
-    faii = point_info(tgt_index,4); % Ä¿±ê¸©Ñö½Ç
+    % è·å–å•ç›®æ ‡ä¿¡æ¯
+    R = point_info(tgt_index, 1); % ç›®æ ‡è·ç¦»
+    V = point_info(tgt_index, 2); % ç›®æ ‡é€Ÿåº¦
+    theta = point_info(tgt_index, 3); % ç›®æ ‡æ–¹ä½è§’
+    faii = point_info(tgt_index,4); % ç›®æ ‡ä¿¯ä»°è§’
 
-    % µ¥Ä¿±ê¾àÀëĞÅÏ¢
+    % å•ç›®æ ‡è·ç¦»ä¿¡æ¯
     kr = zeros(1,IFFT_length);
     for k = 1:IFFT_length
         kr(k) = exp(-1i * 2 * pi * (k-1) * delta_f * 2 * R / c);
     end
-    % µ¥Ä¿±êËÙ¶ÈĞÅÏ¢
+    % å•ç›®æ ‡é€Ÿåº¦ä¿¡æ¯
     kd = zeros(1,symbols_per_carrier);
     for k = 1:symbols_per_carrier
         kd(k) = exp(1i * 2 * pi * T_OFDM * (k-1) * 2 * V * f_c / c);
     end
     
-    % ÆµÓòµş¼ÓÊ±ÑÓ¶àÆÕÀÕĞÅÏ¢£¬Rx_complex_carrier_matrixÊÇÆµÓòĞÎÊ½
-    Rx_complex_carrier_matrix_radar = 1 * Rx_complex_carrier_matrix .* (kd' *  kr);%Ê±ÑÓ¶àÆÕÀÕÏî²»ÊÜfft²Ù×÷Ó°Ïì£¬Ö±½Ó³ËÔÚÆµÓòÒ²ĞĞ
+    % é¢‘åŸŸå åŠ æ—¶å»¶å¤šæ™®å‹’ä¿¡æ¯ï¼ŒRx_complex_carrier_matrixæ˜¯é¢‘åŸŸå½¢å¼
+    Rx_complex_carrier_matrix_radar = 1 * Rx_complex_carrier_matrix .* (kd' *  kr);%æ—¶å»¶å¤šæ™®å‹’é¡¹ä¸å—fftæ“ä½œå½±å“ï¼Œç›´æ¥ä¹˜åœ¨é¢‘åŸŸä¹Ÿè¡Œ
     
-    %¶àÌìÏßµ¥Ä¿±ê½Ç¶ÈĞÅÏ¢
+    %å¤šå¤©çº¿å•ç›®æ ‡è§’åº¦ä¿¡æ¯
     ka=zeros(M,N);
     for index_x=1:M
         for index_y=1:N
-              % ²¨³Ì²îÎª-£¬ÇÒ¾àÀë¹ØÏµ·¢Éú±ä»¯
+              % æ³¢ç¨‹å·®ä¸º-ï¼Œä¸”è·ç¦»å…³ç³»å‘ç”Ÿå˜åŒ–
             if theta>(90*pi/180)
                 if faii<=(90*pi/180)
-                    r=(index_x-1)*d*cos(pi-theta)-(index_y-1)*d*sin(pi-theta);%²¨³Ì²îË®Æ½Í¶Ó°
+                    r=(index_x-1)*d*cos(pi-theta)-(index_y-1)*d*sin(pi-theta);%æ³¢ç¨‹å·®æ°´å¹³æŠ•å½±
                     ka(index_x,index_y)=exp(-1j*2*pi*r*cos(faii)/lambda); 
                 end
                 if faii>(90*pi/180)
-                    r=(index_x-1)*d*cos(pi-theta)+(index_y-1)*d*sin(pi-theta);%²¨³Ì²îË®Æ½Í¶Ó°
+                    r=(index_x-1)*d*cos(pi-theta)+(index_y-1)*d*sin(pi-theta);%æ³¢ç¨‹å·®æ°´å¹³æŠ•å½±
                     ka(index_x,index_y)=exp(-1j*2*pi*r*(cos(pi-faii))/lambda); 
                 end
             end
-              %²¨³Ì²îÎª+
+              %æ³¢ç¨‹å·®ä¸º+
             if theta<=(90*pi/180)
                 
                 if faii<=(90*pi/180)
-                    r=(index_x-1)*d*cos(theta)+(index_y-1)*d*sin(theta);%²¨³Ì²îË®Æ½Í¶Ó°
+                    r=(index_x-1)*d*cos(theta)+(index_y-1)*d*sin(theta);%æ³¢ç¨‹å·®æ°´å¹³æŠ•å½±
                     ka(index_x,index_y)=exp(1j*2*pi*r*cos(faii)/lambda);
                 end
                 if faii>(90*pi/180)
-                    r=(index_x-1)*d*cos(theta)-(index_y-1)*d*sin(theta);%²¨³Ì²îË®Æ½Í¶Ó°
+                    r=(index_x-1)*d*cos(theta)-(index_y-1)*d*sin(theta);%æ³¢ç¨‹å·®æ°´å¹³æŠ•å½±
                     ka(index_x,index_y)=exp(1j*2*pi*r*(cos(pi-faii))/lambda); 
                 end
                  
@@ -414,25 +414,25 @@ for tgt_index = 1:size(point_info, 1)
         end 
     end
     % multi_Rx_complex_carrier_matrix_radar_RX1 = multi_Rx_complex_carrier_matrix_radar_RX1 + Rx_complex_carrier_matrix_radar * ka(1,1);
-    % Ê£ÓàÊ±¼äÔ¤¹À
+    % å‰©ä½™æ—¶é—´é¢„ä¼°
     tCount1 = tCount1 + toc(t00);
     t_step = tCount1/tgt_index;
     t_res = (size(point_info, 1) - tgt_index) * t_step;
-    str=['Ê£ÓàÔËĞĞÊ±¼ä£º',num2str(t_res/60),'min'];
+    str=['å‰©ä½™è¿è¡Œæ—¶é—´ï¼š',num2str(t_res/60),'min'];
     waitbar(tgt_index/size(point_info, 1), win, str)
 end
 close(win);
-disp('µ¥ÌìÏß»Ø²¨ĞÅºÅÉú³ÉÍê±Ï£¡')
-%% ********OFDMÀ×´ïĞÅºÅ´¦Àí£¨²âËÙ²â¾à£©***********************************************************
-disp('¿ªÊ¼²âËÙ²â¾à......')
+disp('å•å¤©çº¿å›æ³¢ä¿¡å·ç”Ÿæˆå®Œæ¯•ï¼')
+%% ********OFDMé›·è¾¾ä¿¡å·å¤„ç†ï¼ˆæµ‹é€Ÿæµ‹è·ï¼‰***********************************************************
+disp('å¼€å§‹æµ‹é€Ÿæµ‹è·......')
 
-% ²âËÙ²â¾à
+% æµ‹é€Ÿæµ‹è·
 Velocity_fft = zeros(size(multi_Rx_complex_carrier_matrix_radar));
 
-win = waitbar(0, 'ÕıÔÚÎªËùÓĞÌìÏß»Ø²¨½øĞĞfft...');
+win = waitbar(0, 'æ­£åœ¨ä¸ºæ‰€æœ‰å¤©çº¿å›æ³¢è¿›è¡Œfft...');
 tCount1 = 0;
 for i=1:M
-    % ¼ÆÊ±³õÊ¼»¯
+    % è®¡æ—¶åˆå§‹åŒ–
     t00 = tic;
     for j=1:N
         div_page = multi_Rx_complex_carrier_matrix_radar(:, :, i, j) ./ complex_carrier_matrix;
@@ -440,27 +440,27 @@ for i=1:M
         page_fft = fftshift(fft(page_ifft, symbols_per_carrier, 1), 1);
         Velocity_fft(:, :, i, j) = page_fft;
     end
-    %Ê£ÓàÊ±¼äÔ¤¹À
+    %å‰©ä½™æ—¶é—´é¢„ä¼°
     tCount1 = tCount1 + toc(t00);
     t_step = tCount1/i;
     t_res = (M - i) * t_step;
-    str=['Ê£ÓàÔËĞĞÊ±¼ä£º',num2str(t_res/60),'min'];
+    str=['å‰©ä½™è¿è¡Œæ—¶é—´ï¼š',num2str(t_res/60),'min'];
     waitbar(i/M, win, str)
 end
 close(win);
 
-% Ê×ÏÈÕë¶Ô²âËÙ²â¾à½á¹û½øĞĞºãĞé¾¯¼ì²â
+% é¦–å…ˆé’ˆå¯¹æµ‹é€Ÿæµ‹è·ç»“æœè¿›è¡Œæ’è™šè­¦æ£€æµ‹
 [RD_threshold_matrix,RD_target_index,RD_detect_matrix_abs] = OSCA_CFAR(Velocity_fft(:, :, 1, 1));
-disp('²âËÙ²â¾àÍê±Ï£¡')
-%% ²âËÙ²â¾à½á¹û¼°CFARÃÅÏŞ»æÍ¼
+disp('æµ‹é€Ÿæµ‹è·å®Œæ¯•ï¼')
+%% æµ‹é€Ÿæµ‹è·ç»“æœåŠCFARé—¨é™ç»˜å›¾
 b=-symbols_per_carrier/2:1:symbols_per_carrier/2-1;
 a=1:1:IFFT_length;
 figure
 [A,B] = meshgrid(a.*(c / 2 / delta_f)/IFFT_length,b.*(c / 2 / f_c/T_OFDM)/symbols_per_carrier);
 mesh(A,B,RD_detect_matrix_abs);
 axis([50 150 -50 50 0 5e6])
-xlabel('¾àÀë/m');ylabel('ËÙ¶È£¨m/s£©');zlabel('ĞÅºÅ·ùÖµ');
-title('ËÙ¶È¾àÀëfft½á¹û');
+xlabel('è·ç¦»/m');ylabel('é€Ÿåº¦ï¼ˆm/sï¼‰');zlabel('ä¿¡å·å¹…å€¼');
+title('é€Ÿåº¦è·ç¦»fftç»“æœ');
 
 b_1=-symbols_per_carrier/2:1:symbols_per_carrier/2-1;
 a_1=1:1:IFFT_length;
@@ -469,23 +469,23 @@ figure
 [A_1,B_1] = meshgrid(a_1.*(c / 2 / delta_f)/IFFT_length,b_1.*(c / 2 / f_c/T_OFDM)/symbols_per_carrier);
 mesh(A_1,B_1,RD_threshold_matrix);
 axis([50 150 -50 50 0 5e6])
-xlabel('¾àÀë/m');ylabel('ËÙ¶È£¨m/s£©');zlabel('ĞÅºÅ·ùÖµ');
-title('ËÙ¶È¾àÀëfftÃÅÏŞ½á¹û');
+xlabel('è·ç¦»/m');ylabel('é€Ÿåº¦ï¼ˆm/sï¼‰');zlabel('ä¿¡å·å¹…å€¼');
+title('é€Ÿåº¦è·ç¦»ffté—¨é™ç»“æœ');
 
-%% »Ø²¨ĞÅºÅ¹¹½¨£¨½Ç¶È£©¿¼ÂÇµ½ÌìÏßÊıÁ¿½Ï¶à£¬Òò´ËÏÈÍ¨¹ıOSCA_CFARÈ·¶¨Ä¿±ê´æÔÚµÄRE£¬ÔÙÕë¶Ô¶ÔÓ¦REÉú³É¶àÌìÏß½ÓÊÕ¾ØÕó£¬½ÚÊ¡ÄÚ´æ¼õĞ¡¼ÆËãÑ¹Á¦£¬Í¬Ê±½µµÍ½Ç¶È·Ö±æÂÊÒªÇó
-disp('ÕıÔÚ¹¹½¨¶àÌìÏß½Ç¶È»Ø²¨¾ØÕó......');
-Angel_page_num = size(RD_target_index, 1); % Ñ¡È¡Ä¿±ê¶ÔÓ¦µÄRE½øĞĞ²â½Ç
+%% å›æ³¢ä¿¡å·æ„å»ºï¼ˆè§’åº¦ï¼‰è€ƒè™‘åˆ°å¤©çº¿æ•°é‡è¾ƒå¤šï¼Œå› æ­¤å…ˆé€šè¿‡OSCA_CFARç¡®å®šç›®æ ‡å­˜åœ¨çš„REï¼Œå†é’ˆå¯¹å¯¹åº”REç”Ÿæˆå¤šå¤©çº¿æ¥æ”¶çŸ©é˜µï¼ŒèŠ‚çœå†…å­˜å‡å°è®¡ç®—å‹åŠ›ï¼ŒåŒæ—¶é™ä½è§’åº¦åˆ†è¾¨ç‡è¦æ±‚
+disp('æ­£åœ¨æ„å»ºå¤šå¤©çº¿è§’åº¦å›æ³¢çŸ©é˜µ......');
+Angel_page_num = size(RD_target_index, 1); % é€‰å–ç›®æ ‡å¯¹åº”çš„REè¿›è¡Œæµ‹è§’
 Angle_matrix = zeros(M, N, Angel_page_num);
 
 for i=1:Angel_page_num
     Angle_matrix(:, :, i) = Velocity_fft(RD_target_index(i,1), RD_target_index(i,2), :, :);
 end
-disp('¶àÌìÏß½Ç¶È»Ø²¨ĞÅºÅÉú³ÉÍê±Ï£¡');
-%% ²â½Ç
-disp('¿ªÊ¼²â½Ç......')
-% MUSIC½Ç¶ÈËÑË÷»ù±¾²ÎÊı
-space = 0.2; % ËÑË÷Á£¶È
-% ËÑË÷·¶Î§
+disp('å¤šå¤©çº¿è§’åº¦å›æ³¢ä¿¡å·ç”Ÿæˆå®Œæ¯•ï¼');
+%% æµ‹è§’
+disp('å¼€å§‹æµ‹è§’......')
+% MUSICè§’åº¦æœç´¢åŸºæœ¬å‚æ•°
+space = 0.2; % æœç´¢ç²’åº¦
+% æœç´¢èŒƒå›´
 theta_head_offset = 60;
 theta_back_offset = 60;
 faii_head_offset = 60;
@@ -498,67 +498,67 @@ Angle_music_threshold_matrix = zeros(length(theta_list), length(faii_list), Ange
 Angle_music_abs_matrix = zeros(length(theta_list), length(faii_list), Angel_page_num);
 A2_Angle_target_cell = cell(size(RD_target_index, 1), 1);
 
-win = waitbar(0, 'REÄ¿±ê¼ì²âÖĞ...');
+win = waitbar(0, 'REç›®æ ‡æ£€æµ‹ä¸­...');
 tCount1 = 0;
 for i=1:Angel_page_num
-    % ¼ÆÊ±³õÊ¼»¯
+    % è®¡æ—¶åˆå§‹åŒ–
     t00 = tic;
-    % Ê×ÏÈÈ¡µÚÒ»ĞĞµÚÒ»ÁĞ¹¹½¨Ğ­·½²î¾ØÕó£¨ËÑË÷»ù×¼£¬µ¼ÏòÊ¸Á¿£©
+    % é¦–å…ˆå–ç¬¬ä¸€è¡Œç¬¬ä¸€åˆ—æ„å»ºåæ–¹å·®çŸ©é˜µï¼ˆæœç´¢åŸºå‡†ï¼Œå¯¼å‘çŸ¢é‡ï¼‰
     W = Angle_matrix(:, :, i);
     W_azimuth = W(:, 1);
     W_pitch = W(1, :).';
-    % Î´¾­Æ½»¬
+    % æœªç»å¹³æ»‘
     R_azimuth_ns = W_azimuth * W_azimuth';
     R_pitch_ns = W_pitch * W_pitch';
-    % ¿Õ¼äÆ½»¬Ëã·¨
+    % ç©ºé—´å¹³æ»‘ç®—æ³•
     R_azimuth = smooth_covariance(R_azimuth_ns, K_sub);
     R_pitch = smooth_covariance(R_pitch_ns, K_sub);
     
     
-    [EV_azimuth,D_azimuth] = eig(R_azimuth); %ÄÃµ½ÌØÏòÁ¿EV + ÌØÕ÷ÖµD  ĞÂ°æ±¾matlabÒÑ¾­´ÓĞ¡µ½´óÅÅĞòºÃÁË
+    [EV_azimuth,D_azimuth] = eig(R_azimuth); %æ‹¿åˆ°ç‰¹å‘é‡EV + ç‰¹å¾å€¼D  æ–°ç‰ˆæœ¬matlabå·²ç»ä»å°åˆ°å¤§æ’åºå¥½äº†
     diag_azimuth = diag(D_azimuth);
     signal_space_num_azimuth = WCA_CFAR_1D(diag_azimuth);
-    En_azimuth = EV_azimuth(:, 1:(K_sub-signal_space_num_azimuth)); %signal_space_num_azimuthÕâÀï´ú±íµÄÊÇĞÅºÅ×Ó¿Õ¼äÎ¬¶È£¬ÕâÀïÖ±½Ó¸øÁË£¬¾ßÌåµÄÈ·¶¨·½·¨£º1³ÂĞñÊ¦ĞÖµÄÌØÕ÷ÖµÏà³ı±ÈÖµ±È½Ï2ÎÒµÄºãĞé¾¯¼ì²â
+    En_azimuth = EV_azimuth(:, 1:(K_sub-signal_space_num_azimuth)); %signal_space_num_azimuthè¿™é‡Œä»£è¡¨çš„æ˜¯ä¿¡å·å­ç©ºé—´ç»´åº¦ï¼Œè¿™é‡Œç›´æ¥ç»™äº†ï¼Œå…·ä½“çš„ç¡®å®šæ–¹æ³•ï¼š1é™ˆæ—­å¸ˆå…„çš„ç‰¹å¾å€¼ç›¸é™¤æ¯”å€¼æ¯”è¾ƒ2æˆ‘çš„æ’è™šè­¦æ£€æµ‹
     % figure
     % bar3(D_azimuth);
-    % title('azimuthÌØÕ÷Öµ¾ØÕóÅÅÁĞ')
+    % title('azimuthç‰¹å¾å€¼çŸ©é˜µæ’åˆ—')
     
-    [EV_pitch,D_pitch] = eig(R_pitch); %ÄÃµ½ÌØÏòÁ¿EV + ÌØÕ÷ÖµD  ĞÂ°æ±¾matlabÒÑ¾­´ÓĞ¡µ½´óÅÅĞòºÃÁË
+    [EV_pitch,D_pitch] = eig(R_pitch); %æ‹¿åˆ°ç‰¹å‘é‡EV + ç‰¹å¾å€¼D  æ–°ç‰ˆæœ¬matlabå·²ç»ä»å°åˆ°å¤§æ’åºå¥½äº†
     diag_pitch = diag(D_pitch);
     signal_space_num_pitch = WCA_CFAR_1D(diag_pitch);
-    En_pitch = EV_pitch(:, 1:(K_sub-signal_space_num_pitch)); %signal_space_num_pitchÕâÀï´ú±íµÄÊÇĞÅºÅ×Ó¿Õ¼äÎ¬¶È£¬ÕâÀïÖ±½Ó¸øÁË£¬¾ßÌåµÄÈ·¶¨·½·¨£º1³ÂĞñÊ¦ĞÖµÄÌØÕ÷ÖµÏà³ı±ÈÖµ±È½Ï2ÎÒµÄºãĞé¾¯¼ì²â
+    En_pitch = EV_pitch(:, 1:(K_sub-signal_space_num_pitch)); %signal_space_num_pitchè¿™é‡Œä»£è¡¨çš„æ˜¯ä¿¡å·å­ç©ºé—´ç»´åº¦ï¼Œè¿™é‡Œç›´æ¥ç»™äº†ï¼Œå…·ä½“çš„ç¡®å®šæ–¹æ³•ï¼š1é™ˆæ—­å¸ˆå…„çš„ç‰¹å¾å€¼ç›¸é™¤æ¯”å€¼æ¯”è¾ƒ2æˆ‘çš„æ’è™šè­¦æ£€æµ‹
     % figure
     % bar3(D_pitch);
-    % title('pitchÌØÕ÷Öµ¾ØÕóÅÅÁĞ')
+    % title('pitchç‰¹å¾å€¼çŸ©é˜µæ’åˆ—')
 
     for theta_index=1:length(theta_list)
     theta_search = theta_list(theta_index)*pi/180;
         for faii_index=1:length(faii_list)
             faii_search = faii_list(faii_index)*pi/180;
-            W_search = zeros(K_sub,K_sub); % ÕóÁĞÁ÷ĞÎ¹éÁã
+            W_search = zeros(K_sub,K_sub); % é˜µåˆ—æµå½¢å½’é›¶
     
             for index_x=1:K_sub
                 for index_y=1:K_sub
-                    % ²¨³Ì²îÎª-£¬ÇÒ¾àÀë¹ØÏµ·¢Éú±ä»¯
+                    % æ³¢ç¨‹å·®ä¸º-ï¼Œä¸”è·ç¦»å…³ç³»å‘ç”Ÿå˜åŒ–
                     if theta_search>(90*pi/180)
                         if faii_search<=(90*pi/180)
-                            r=(index_x-1)*d*cos(pi-theta_search)-(index_y-1)*d*sin(pi-theta_search);%²¨³Ì²îË®Æ½Í¶Ó°
+                            r=(index_x-1)*d*cos(pi-theta_search)-(index_y-1)*d*sin(pi-theta_search);%æ³¢ç¨‹å·®æ°´å¹³æŠ•å½±
                             W_search(index_x,index_y)=exp(-1j*2*pi*r*cos(faii_search)/lambda); 
                         end
                         if faii_search>(90*pi/180)
-                            r=(index_x-1)*d*cos(pi-theta_search)+(index_y-1)*d*sin(pi-theta_search);%²¨³Ì²îË®Æ½Í¶Ó°
+                            r=(index_x-1)*d*cos(pi-theta_search)+(index_y-1)*d*sin(pi-theta_search);%æ³¢ç¨‹å·®æ°´å¹³æŠ•å½±
                             W_search(index_x,index_y)=exp(-1j*2*pi*r*(cos(pi-faii_search))/lambda); 
                         end
                     end
-                    %²¨³Ì²îÎª+
+                    %æ³¢ç¨‹å·®ä¸º+
                     if theta_search<=(90*pi/180)
     
                         if faii_search<=(90*pi/180)
-                            r=(index_x-1)*d*cos(theta_search)+(index_y-1)*d*sin(theta_search);%²¨³Ì²îË®Æ½Í¶Ó°
+                            r=(index_x-1)*d*cos(theta_search)+(index_y-1)*d*sin(theta_search);%æ³¢ç¨‹å·®æ°´å¹³æŠ•å½±
                             W_search(index_x,index_y)=exp(1j*2*pi*r*cos(faii_search)/lambda);
                         end
                         if faii_search>(90*pi/180)
-                            r=(index_x-1)*d*cos(theta_search)-(index_y-1)*d*sin(theta_search);%²¨³Ì²îË®Æ½Í¶Ó°
+                            r=(index_x-1)*d*cos(theta_search)-(index_y-1)*d*sin(theta_search);%æ³¢ç¨‹å·®æ°´å¹³æŠ•å½±
                             W_search(index_x,index_y)=exp(1j*2*pi*r*(cos(pi-faii_search))/lambda); 
                         end
                     end
@@ -577,38 +577,38 @@ for i=1:Angel_page_num
         end
     end
     Angle_music_matrix(:, :, i)= o_matrix_azimuth_m .* o_matrix_pitch_m;
-    % Á½´ÎmusicÆ¥ÅäÇé¿ö
+    % ä¸¤æ¬¡musicåŒ¹é…æƒ…å†µ
     % figure
     % mesh(o_matrix_azimuth_m)
     % figure
     % mesh(o_matrix_pitch_m)
-    % % ÕûÌå½á¹û
+    % % æ•´ä½“ç»“æœ
     % figure
     % a=1:size(Angle_music_matrix(:, :, i), 2);
     % b=1:size(Angle_music_matrix(:, :, i), 1);
     % [X,Y]=meshgrid(a,b);
     % mesh(X*space+faii_head_offset,Y*space+theta_head_offset,music_matrix);
-    % xlabel('¸©Ñö½Çfaii/¡ã')
-    % ylabel('·½Î»½Çtheta/¡ã')
+    % xlabel('ä¿¯ä»°è§’faii/Â°')
+    % ylabel('æ–¹ä½è§’theta/Â°')
 
-    % CA_CFAR¼ì²â
+    % CA_CFARæ£€æµ‹
     [A2_threshold_matrix,A2_target_index,A2_detect_matrix_abs] = CA_CFAR(Angle_music_matrix(:, :, i));
     Angle_music_threshold_matrix(:, :, i) = A2_threshold_matrix;
     Angle_music_abs_matrix(:, :, i) = A2_detect_matrix_abs;
     A2_Angle_target_cell{i, 1} = A2_target_index;
     
-    X = ['µÚ', num2str(i), '¸öÄ¿±êRE¼ì²âÍê±Ï'];
+    X = ['ç¬¬', num2str(i), 'ä¸ªç›®æ ‡REæ£€æµ‹å®Œæ¯•'];
     disp(X);
-    %Ê£ÓàÊ±¼äÔ¤¹À
+    %å‰©ä½™æ—¶é—´é¢„ä¼°
     tCount1 = tCount1 + toc(t00);
     t_step = tCount1/i;
     t_res = (Angel_page_num - i) * t_step;
-    str=['Ê£ÓàÔËĞĞÊ±¼ä£º',num2str(t_res/60),'min'];
+    str=['å‰©ä½™è¿è¡Œæ—¶é—´ï¼š',num2str(t_res/60),'min'];
     waitbar(i/Angel_page_num, win, str)
 end
 close(win);
-disp('²â½ÇÍê±Ï£¡');
-%% ²â½Ç½á¹û¼°CFARÃÅÏŞ»æÍ¼
+disp('æµ‹è§’å®Œæ¯•ï¼');
+%% æµ‹è§’ç»“æœåŠCFARé—¨é™ç»˜å›¾
 check_num = 6;
 figure
 a=1:size(Angle_music_abs_matrix(:, :, check_num), 2);
@@ -616,9 +616,9 @@ b=1:size(Angle_music_abs_matrix(:, :, check_num), 1);
 [X,Y]=meshgrid(a,b);
 mesh(X*space+faii_head_offset,Y*space+theta_head_offset,abs(Angle_music_abs_matrix(:, :, check_num)));
 axis([60 90 60 120])
-title('·½Î»music½á¹û');
-xlabel('¸©Ñö½Çfaii/¡ã')
-ylabel('·½Î»½Çtheta/¡ã')
+title('æ–¹ä½musicç»“æœ');
+xlabel('ä¿¯ä»°è§’faii/Â°')
+ylabel('æ–¹ä½è§’theta/Â°')
 
 figure
 a=1:size(Angle_music_threshold_matrix(:, :, check_num), 2);
@@ -626,29 +626,29 @@ b=1:size(Angle_music_threshold_matrix(:, :, check_num), 1);
 [X,Y]=meshgrid(a,b);
 mesh(X*space+faii_head_offset,Y*space+theta_head_offset,abs(Angle_music_threshold_matrix(:, :, check_num)));
 axis([60 90 60 120])
-title('·½Î»musicÃÅÏŞ');
-xlabel('¸©Ñö½Çfaii/¡ã')
-ylabel('·½Î»½Çtheta/¡ã')
-%% »Ö¸´Ô­Ê¼Î»ÖÃĞÅÏ¢
+title('æ–¹ä½musicé—¨é™');
+xlabel('ä¿¯ä»°è§’faii/Â°')
+ylabel('æ–¹ä½è§’theta/Â°')
+%% æ¢å¤åŸå§‹ä½ç½®ä¿¡æ¯
 pos_all = [];
 angle_all= [];
 for i=1:size(RD_target_index,1)
-    % ËÙ¶È¾àÀë¼ÆËã
+    % é€Ÿåº¦è·ç¦»è®¡ç®—
     M_R = ((RD_target_index(i, 2)-1) / IFFT_length) * (c / 2 / delta_f);
     N_V = -((RD_target_index(i, 1)-symbols_per_carrier/2-1) / symbols_per_carrier) * (c / 2 / f_c / T_OFDM);
-    % ¿Õ¼ä½Ç¶È²éÑ¯
+    % ç©ºé—´è§’åº¦æŸ¥è¯¢
     for j=1:size(A2_Angle_target_cell{i, 1}, 1)
         theta_estimation = A2_Angle_target_cell{i, 1}(j,1)*space + theta_head_offset;
         faii_estimation = A2_Angle_target_cell{i, 1}(j,2)*space + faii_head_offset;
 
         angle_all=[angle_all; theta_estimation faii_estimation];
 
-        % »Ö¸´µÑ¿¨¶û×ø±êÏµĞÅÏ¢
+        % æ¢å¤ç¬›å¡å°”åæ ‡ç³»ä¿¡æ¯
         pos_z = base_pos(3) - M_R * cosd(faii_estimation);
         pos_x = base_pos(1) + M_R * sind(faii_estimation) * cosd(theta_estimation);
         pos_y = base_pos(2) - M_R * sind(faii_estimation) * sind(theta_estimation);
         % [pos_x, pos_y] = pol2cart(faii_estimation, M_R * sin(theta_estimation));
-        % ´¢´æÎ»ÖÃĞÅÏ¢
+        % å‚¨å­˜ä½ç½®ä¿¡æ¯
         pos_all = [pos_all;pos_x pos_y pos_z N_V];
     end
 end
@@ -664,10 +664,10 @@ axis([0 30 0 20 0 20])
 xlabel('X/m')
 ylabel('Y/m')
 grid on
-h = colorbar;%ÓÒ²àÑÕÉ«À¸
-set(get(h,'label'),'string','ÔË¶¯ËÙ¶È');%¸øÓÒ²àÑÕÉ«À¸ÃüÃû
+h = colorbar;%å³ä¾§é¢œè‰²æ 
+set(get(h,'label'),'string','è¿åŠ¨é€Ÿåº¦');%ç»™å³ä¾§é¢œè‰²æ å‘½å
 
-%% ÏàÍ¬»æÍ¼·½Ê½ÑéÖ¤»æÍ¼Á÷³Ì¡¢É¢ÉäµãĞÅÏ¢´´½¨Á÷³Ì£¨Ã»ÎÊÌâ£©
+%% ç›¸åŒç»˜å›¾æ–¹å¼éªŒè¯ç»˜å›¾æµç¨‹ã€æ•£å°„ç‚¹ä¿¡æ¯åˆ›å»ºæµç¨‹ï¼ˆæ²¡é—®é¢˜ï¼‰
 pos_all_true = [];
 for i=1:size(A1_info, 1)
     theta_true = point_info(i, 3);
@@ -675,12 +675,12 @@ for i=1:size(A1_info, 1)
     R_true = point_info(i, 1);
     v_true = point_info(i, 2);
 
-    % »Ö¸´µÑ¿¨¶û×ø±êÏµĞÅÏ¢
+    % æ¢å¤ç¬›å¡å°”åæ ‡ç³»ä¿¡æ¯
     pos_z_true = base_pos(3) - R_true * cos(faii_true);
     pos_x_true = base_pos(1) + R_true * sin(faii_true) * cos(theta_true);
     pos_y_true = base_pos(2) - R_true * sin(faii_true) * sin(theta_true);
     % [pos_x, pos_y] = pol2cart(faii_estimation, M_R * sin(theta_estimation));
-    % ´¢´æÎ»ÖÃĞÅÏ¢
+    % å‚¨å­˜ä½ç½®ä¿¡æ¯
     pos_all_true = [pos_all_true;pos_x_true pos_y_true pos_z_true v_true];
 end
 figure
@@ -694,5 +694,5 @@ axis([0 30 0 20 0 20])
 xlabel('X/m')
 ylabel('Y/m')
 grid on
-h = colorbar;%ÓÒ²àÑÕÉ«À¸
-set(get(h,'label'),'string','ÔË¶¯ËÙ¶È');%¸øÓÒ²àÑÕÉ«À¸ÃüÃû
+h = colorbar;%å³ä¾§é¢œè‰²æ 
+set(get(h,'label'),'string','è¿åŠ¨é€Ÿåº¦');%ç»™å³ä¾§é¢œè‰²æ å‘½å
