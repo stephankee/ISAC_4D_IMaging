@@ -5,7 +5,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from monte_carlo_generator_v2 import MonteCarloSceneGenerator, visualize_scene
+from monte_carlo_generator_scenario1 import MonteCarloSceneGenerator, visualize_scene
 import os
 from tqdm import tqdm
 
@@ -94,31 +94,31 @@ def plot_statistics(stats, output_path='monte_carlo_scenes_v2/statistics.png'):
      
     # 车辆数量分布
     axes[0, 0].hist(stats['vehicle_counts'], bins=range(0, 8), alpha=0.7, color='red', edgecolor='black')
-    axes[0, 0].set_xlabel('车辆数量', fontsize=12)
-    axes[0, 0].set_ylabel('场景数', fontsize=12)
-    axes[0, 0].set_title('车辆数量分布', fontsize=14, fontweight='bold')
+    axes[0, 0].set_xlabel('Number of Vehicles', fontsize=12)
+    axes[0, 0].set_ylabel('Number of Scenes', fontsize=12)
+    axes[0, 0].set_title('Vehicle Count Distribution', fontsize=14, fontweight='bold')
     axes[0, 0].grid(True, alpha=0.3)
     
     # 行人数量分布
     axes[0, 1].hist(stats['pedestrian_counts'], bins=range(0, 10), alpha=0.7, color='blue', edgecolor='black')
-    axes[0, 1].set_xlabel('行人数量', fontsize=12)
-    axes[0, 1].set_ylabel('场景数', fontsize=12)
-    axes[0, 1].set_title('行人数量分布', fontsize=14, fontweight='bold')
+    axes[0, 1].set_xlabel('Number of Pedestrians', fontsize=12)
+    axes[0, 1].set_ylabel('Number of Scenes', fontsize=12)
+    axes[0, 1].set_title('Pedestrian Count Distribution', fontsize=14, fontweight='bold')
     axes[0, 1].grid(True, alpha=0.3)
     
     # 总散射点数分布
     axes[1, 0].hist(stats['total_scatterers'], bins=20, alpha=0.7, color='green', edgecolor='black')
-    axes[1, 0].set_xlabel('总散射点数', fontsize=12)
-    axes[1, 0].set_ylabel('场景数', fontsize=12)
-    axes[1, 0].set_title('总散射点数分布', fontsize=14, fontweight='bold')
+    axes[1, 0].set_xlabel('Total Scatterers', fontsize=12)
+    axes[1, 0].set_ylabel('Number of Scenes', fontsize=12)
+    axes[1, 0].set_title('Total Scatterer Distribution', fontsize=14, fontweight='bold')
     axes[1, 0].grid(True, alpha=0.3)
     
     # 车辆vs行人散点图
     axes[1, 1].scatter(stats['vehicle_counts'], stats['pedestrian_counts'], 
                        s=100, alpha=0.6, c=stats['total_scatterers'], cmap='viridis')
-    axes[1, 1].set_xlabel('车辆数量', fontsize=12)
-    axes[1, 1].set_ylabel('行人数量', fontsize=12)
-    axes[1, 1].set_title('车辆 vs 行人数量', fontsize=14, fontweight='bold')
+    axes[1, 1].set_xlabel('Number of Vehicles', fontsize=12)
+    axes[1, 1].set_ylabel('Number of Pedestrians', fontsize=12)
+    axes[1, 1].set_title('Vehicles vs Pedestrians', fontsize=14, fontweight='bold')
     axes[1, 1].grid(True, alpha=0.3)
     
     plt.tight_layout()
@@ -133,7 +133,7 @@ def main():
     
     parser = argparse.ArgumentParser(description='批量生成蒙特卡洛场景')
     parser.add_argument('--num-scenes', type=int, default=10, help='场景数量')
-    parser.add_argument('--output-dir', type=str, default='monte_carlo_scenes_v2', help='输出目录')
+    parser.add_argument('--output-dir', type=str, default='scenario_1', help='输出目录')
     parser.add_argument('--seed', type=int, default=0, help='起始随机种子')
     
     args = parser.parse_args()

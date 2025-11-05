@@ -26,20 +26,20 @@ class SceneConfig:
     # 使用4.0m确保任意旋转角度都不会重叠
     VEHICLE_RADIUS = 3.5      # 车辆碰撞半径 (基于实测值3.18m + 余量)
     PEDESTRIAN_RADIUS = 0.6   # 行人碰撞半径
-    BARRIER_RADIUS = 1.5      # 隔离带碰撞半径
+    BARRIER_RADIUS = 0.75      # 隔离带碰撞半径
     LIGHT_RADIUS = 1.5        # 路灯碰撞半径
     
     # 安全距离缓冲
     SAFETY_BUFFER = 0.5       # 额外的安全距离 (确保物体间有足够间隙)
     
     # 数量范围
-    NUM_VEHICLES = (4, 6)     # 车辆数量范围
-    NUM_PEDESTRIANS = (6, 8)  # 行人数量范围
+    NUM_VEHICLES = (5, 7)     # 车辆数量范围
+    NUM_PEDESTRIANS = (7, 9)  # 行人数量范围
     NUM_LIGHTS = 2            # 路灯数量（固定）
     
     # 速度范围
-    VEHICLE_SPEED_RANGE = (0, 20)      # 车辆速度范围 (m/s)
-    PEDESTRIAN_SPEED_RANGE = (0, 3)    # 行人速度范围 (m/s)
+    VEHICLE_SPEED_RANGE = (-20, 20)      # 车辆速度范围 (m/s)
+    PEDESTRIAN_SPEED_RANGE = (-3, 3)    # 行人速度范围 (m/s)
 
 
 class MonteCarloSceneGenerator:

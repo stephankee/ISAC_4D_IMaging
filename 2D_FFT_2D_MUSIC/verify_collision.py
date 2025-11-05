@@ -6,7 +6,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
-from monte_carlo_generator_v2 import MonteCarloSceneGenerator, visualize_scene
+from monte_carlo_generator_scenario1 import MonteCarloSceneGenerator, visualize_scene
 
 
 def visualize_with_collision_circles(scene_data, save_path=None):
@@ -43,7 +43,7 @@ def visualize_with_collision_circles(scene_data, save_path=None):
                    cmap='Blues', vmin=0, vmax=3, alpha=0.3)
     
     # === 绘制碰撞圆 ===
-    from monte_carlo_generator_v2 import SceneConfig
+    from monte_carlo_generator_scenario1 import SceneConfig
     config = SceneConfig()
     
     # 1. 车辆碰撞圆（红色）
@@ -73,14 +73,20 @@ def visualize_with_collision_circles(scene_data, save_path=None):
         ax.add_patch(circle)
         ax.plot(actual_center[0], actual_center[1], 'b+', markersize=8, markeredgewidth=1.5)
     
-    # 3. 隔离带碰撞圆（绿色）- 只绘制几个代表性的
+    # 3. 隔离带碰撞圆（绿色）- 绘制所有20个碰撞圆
     barrier_x = 14.0
-    sample_y = [2, 7, 12, 17]
-    for i, y in enumerate(sample_y):
-        circle = Circle((barrier_x, y), config.BARRIER_RADIUS, 
+    SPACE_Y_MIN = 0
+    SPACE_Y_MAX = 28
+    num_segments = 20
+    for i in range(num_segments):
+        y_pos = SPACE_Y_MIN + (i + 0.5) * SPACE_Y_MAX / num_segments
+        circle = Circle((barrier_x, y_pos), config.BARRIER_RADIUS, 
                        color='green', fill=False, linewidth=1, 
                        linestyle=':', alpha=0.5, label='Barrier' if i == 0 else '')
         ax.add_patch(circle)
+        # 标记圆心
+        if i % 5 == 0:  # 每5个标记一个圆心
+            ax.plot(barrier_x, y_pos, 'g.', markersize=4)
     
     # 4. 路灯碰撞圆（橙色）
     lights = scene_data['objects']['lights']
@@ -110,12 +116,12 @@ def visualize_with_collision_circles(scene_data, save_path=None):
     ax.legend(loc='upper left', fontsize=10)
     
     # 添加说明文本
-    info_text = f"""碰撞半径设置:
-车辆: {config.VEHICLE_RADIUS}m
-行人: {config.PEDESTRIAN_RADIUS}m
-隔离带: {config.BARRIER_RADIUS}m
-路灯: {config.LIGHT_RADIUS}m
-安全缓冲: {config.SAFETY_BUFFER}m"""
+    info_text = f"""Collision Radii:
+Vehicle: {config.VEHICLE_RADIUS}m
+Pedestrian: {config.PEDESTRIAN_RADIUS}m
+Barrier: {config.BARRIER_RADIUS}m
+Light: {config.LIGHT_RADIUS}m
+Safety Buffer: {config.SAFETY_BUFFER}m"""
     ax.text(0.02, 0.98, info_text, transform=ax.transAxes,
             fontsize=9, verticalalignment='top',
             bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
@@ -138,7 +144,7 @@ def verify_no_collision(scene_data):
     返回：
     - bool: True=无碰撞, False=有碰撞
     """
-    from monte_carlo_generator_v2 import SceneConfig
+    from monte_carlo_generator_scenario1 import SceneConfig
     config = SceneConfig()
     
     vehicles = scene_data['objects']['vehicles']
