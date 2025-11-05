@@ -41,15 +41,10 @@ class Vehicle:
             [0, 0, 0], [0, 0, 0.9], [0, 0.6, 0.9], [0, 1, 1.4], [0, 4.5, 1.4], [0, 5, 0.9], [0, 6, 0],
             [2, 0, 0.5], [2, 1.5, 1.7], [2, 2, 1.8], [2, 2.5, 1.8], [2, 3, 1.8], [2, 3.5, 1.8], [2, 4, 1.7], [2, 5.5, 0.8], [2, 6, 0.5],
             [0, 0, 0.5], [0, 1.5, 1.7], [0, 2, 1.8], [0, 2.5, 1.8], [0, 3, 1.8], [0, 3.5, 1.8], [0, 4, 1.7], [0, 5.5, 0.8], [0, 6, 0.5],
-            # 细节填充，两侧
-            [2, 3, 0.6], [2, 3, 0.3], [2, 3, 0], [2, 1, 0.9], [2, 1.4, 0.9], [2, 1.8, 0.9], [2, 2.2, 0.9], [2, 2.6, 0.9], [2, 3, 0.9], [2, 3.4, 0.9], [2, 3.8, 0.9], [2, 4.2, 0.9], [2, 4.6, 0.9], [2, 1, 0.5], [2, 5, 0.4], [2, 0.6, 0.4], [2, 0.4, 0], [2, 1.4, 0.4], [2, 1.6, 0], [2, 5.4, 0.3], [2, 5.6, 0], [2, 4.6, 0.3], [2, 4.4, 0], [2, 2.1, 0], [2, 2.6, 0], [2, 3.5, 0], [2, 4, 0],
-            [0, 3, 0.6], [0, 3, 0.3], [0, 3, 0], [0, 1, 0.9], [0, 1.4, 0.9], [0, 1.8, 0.9], [0, 2.2, 0.9], [0, 2.6, 0.9], [0, 3, 0.9], [0, 3.4, 0.9], [0, 3.8, 0.9], [0, 4.2, 0.9], [0, 4.6, 0.9], [0, 1, 0.5], [0, 5, 0.4], [0, 0.6, 0.4], [0, 0.4, 0], [0, 1.4, 0.4], [0, 1.6, 0], [0, 5.4, 0.3], [0, 5.6, 0], [0, 4.6, 0.3], [0, 4.4, 0], [0, 2.1, 0], [0, 2.6, 0], [0, 3.5, 0], [0, 4, 0],
-            # 细节填充，上表面
-            [1, 0, 0], [1, 0, 0.9], [1, 0.6, 0.9], [1, 5, 0.9], [1, 6, 0], [1, 4, 1.7], [1, 1.5, 1.7], [1, 6, 0.5],
-            [0.5, 0.6, 0.9], [1.5, 0.6, 0.9], [0.5, 5, 0.9], [1.5, 5, 0.9], [0.5, 6, 0], [1.5, 6, 0], [0.5, 4, 1.7], [1.5, 4, 1.7], [0.5, 1.5, 1.7], [1.5, 1.5, 1.7], 
-            [1.5, 3.2, 1.8], [0.5, 3.2, 1.8], [1.5, 2.5, 1.8], [0.5, 2.5, 1.8], # 上面中间
-            [0.5, 6, 0.5], [1.5, 6, 0.5],
-
+            # 细节填充
+            [2, 3, 1.4], [2, 3, 0.6], [2, 3, 0.3], [2, 3, 0], [2, 1, 0.9], [2, 1.4, 0.9], [2, 1.8, 0.9], [2, 2.2, 0.9], [2, 2.6, 0.9], [2, 3, 0.9], [2, 3.4, 0.9], [2, 3.8, 0.9], [2, 4.2, 0.9], [2, 4.6, 0.9], [2, 1, 0.5], [2, 5, 0.4], [2, 0.6, 0.4], [2, 0.4, 0], [2, 1.4, 0.4], [2, 1.6, 0], [2, 5.4, 0.3], [2, 5.6, 0], [2, 4.6, 0.3], [2, 4.4, 0], [2, 2.1, 0], [2, 2.6, 0], [2, 3.5, 0], [2, 4, 0],
+            [0, 3, 1.4], [0, 3, 0.6], [0, 3, 0.3], [0, 3, 0], [0, 1, 0.9], [0, 1.4, 0.9], [0, 1.8, 0.9], [0, 2.2, 0.9], [0, 2.6, 0.9], [0, 3, 0.9], [0, 3.4, 0.9], [0, 3.8, 0.9], [0, 4.2, 0.9], [0, 4.6, 0.9], [0, 1, 0.5], [0, 5, 0.4], [0, 0.6, 0.4], [0, 0.4, 0], [0, 1.4, 0.4], [0, 1.6, 0], [0, 5.4, 0.3], [0, 5.6, 0], [0, 4.6, 0.3], [0, 4.4, 0], [0, 2.1, 0], [0, 2.6, 0], [0, 3.5, 0], [0, 4, 0],
+            [1, 0, 0], [1, 0, 0.9], [1, 0.6, 0.9], [1, 5, 0.9], [1, 6, 0], [1, 4, 1.7], [1, 1.5, 1.7], [1.5, 3.2, 1.8], [0.5, 3.2, 1.8], [1.5, 2.5, 1.8], [0.5, 2.5, 1.8], [1, 6, 0.5],
             # 车轮
             [2, 1, -0.4], [2, 0.7, -0.3], [2, 1.3, -0.3], [2, 5, -0.4], [2, 4.7, -0.3], [2, 5.3, -0.3],
             [0, 1, -0.4], [0, 0.7, -0.3], [0, 1.3, -0.3], [0, 5, -0.4], [0, 4.7, -0.3], [0, 5.3, -0.3],
@@ -182,10 +177,10 @@ class StraightBarrier:
         y_coords = np.arange(0, self.length + self.spacing, self.spacing).reshape(-1, 1)
         
         # 4层结构（相对坐标）
-        plant_1 = np.hstack([np.zeros_like(y_coords) + 0.5, y_coords, np.zeros_like(y_coords)])
-        plant_2 = np.hstack([np.zeros_like(y_coords) - 0.5, y_coords, np.zeros_like(y_coords)])
-        plant_3 = np.hstack([np.zeros_like(y_coords) - 0.5, y_coords, np.ones_like(y_coords)])
-        plant_4 = np.hstack([np.zeros_like(y_coords) + 0.5, y_coords, np.ones_like(y_coords)])
+        plant_1 = np.hstack([np.zeros_like(y_coords) + 1, y_coords, np.zeros_like(y_coords)])
+        plant_2 = np.hstack([np.zeros_like(y_coords) , y_coords, np.zeros_like(y_coords)])
+        plant_3 = np.hstack([np.zeros_like(y_coords) , y_coords, np.ones_like(y_coords)])
+        plant_4 = np.hstack([np.zeros_like(y_coords) + 1, y_coords, np.ones_like(y_coords)])
         
         plant_group = np.vstack([plant_1, plant_2, plant_3, plant_4])
         
@@ -251,10 +246,10 @@ class StraightBarrier:
         y_coords = np.arange(0, self.length + self.spacing, self.spacing).reshape(-1, 1)
         
         # 4层结构（相对坐标）
-        plant_1 = np.hstack([np.zeros_like(y_coords) + 0.5, y_coords, np.zeros_like(y_coords)])
-        plant_2 = np.hstack([np.zeros_like(y_coords) - 0.5, y_coords, np.zeros_like(y_coords)])
-        plant_3 = np.hstack([np.zeros_like(y_coords) - 0.5, y_coords, np.ones_like(y_coords)])
-        plant_4 = np.hstack([np.zeros_like(y_coords) + 0.5, y_coords, np.ones_like(y_coords)])
+        plant_1 = np.hstack([np.zeros_like(y_coords) + 1, y_coords, np.zeros_like(y_coords)])
+        plant_2 = np.hstack([np.zeros_like(y_coords) , y_coords, np.zeros_like(y_coords)])
+        plant_3 = np.hstack([np.zeros_like(y_coords) , y_coords, np.ones_like(y_coords)])
+        plant_4 = np.hstack([np.zeros_like(y_coords) + 1, y_coords, np.ones_like(y_coords)])
         
         plant_group = np.vstack([plant_1, plant_2, plant_3, plant_4])
         

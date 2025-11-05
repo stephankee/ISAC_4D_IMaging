@@ -17,7 +17,7 @@ class SceneConfig:
     SPACE_X_MIN = 0
     SPACE_X_MAX = 28
     SPACE_Y_MIN = 0
-    SPACE_Y_MAX = 28
+    SPACE_Y_MAX = 20
     SPACE_Z_MIN = 0
     SPACE_Z_MAX = 20
     
@@ -33,13 +33,13 @@ class SceneConfig:
     SAFETY_BUFFER = 0.5       # 额外的安全距离 (确保物体间有足够间隙)
     
     # 数量范围
-    NUM_VEHICLES = (5, 7)     # 车辆数量范围
-    NUM_PEDESTRIANS = (7, 9)  # 行人数量范围
+    NUM_VEHICLES = (3, 4)     # 车辆数量范围
+    NUM_PEDESTRIANS = (4, 6)  # 行人数量范围
     NUM_LIGHTS = 2            # 路灯数量（固定）
     
     # 速度范围
-    VEHICLE_SPEED_RANGE = (-20, 20)      # 车辆速度范围 (m/s)
-    PEDESTRIAN_SPEED_RANGE = (-3, 3)    # 行人速度范围 (m/s)
+    VEHICLE_SPEED_RANGE = (-10, 10)      # 车辆速度范围 (m/s)
+    PEDESTRIAN_SPEED_RANGE = (-2, 2)    # 行人速度范围 (m/s)
 
 
 class MonteCarloSceneGenerator:
@@ -123,8 +123,8 @@ class MonteCarloSceneGenerator:
         
         # 2. 路灯：隔离带两侧
         light_positions = [
-            (barrier_x - 0.5, 3, 0),   # 左侧
-            (barrier_x + 0.5, 25, 0)   # 右侧
+            (barrier_x + 1, 3, 0),   # 左侧
+            (barrier_x , 17, 0)   # 右侧
         ]
         
         for i, pos in enumerate(light_positions, 1):
@@ -160,11 +160,11 @@ class MonteCarloSceneGenerator:
                 )
                 center = (x, y, 0)
                 
-                # 随机朝向（0-360度）
-                direction = np.random.uniform(0, 360)
+                # 方向：0° 或 180°
+                direction = np.random.choice([0, 180])
                 
-                # 随机速度
-                velocity = np.random.uniform(*self.config.VEHICLE_SPEED_RANGE)
+                # 速度：10 或 -10 m/s
+                velocity = np.random.choice([10, -10])
                 
                 # 先创建车辆对象以获取实际的几何中心
                 vehicle = Vehicle(center=center, direction=direction, velocity=velocity)
@@ -204,11 +204,11 @@ class MonteCarloSceneGenerator:
                 )
                 center = (x, y, 0)
                 
-                # 随机朝向（0-360度）
-                direction = np.random.uniform(0, 360)
+                # 方向：0° 或 180°
+                direction = np.random.choice([0, 180])
                 
-                # 随机速度
-                velocity = np.random.uniform(*self.config.PEDESTRIAN_SPEED_RANGE)
+                # 速度：2 或 -2 m/s
+                velocity = np.random.choice([2, -2])
                 
                 # 先创建行人对象以获取实际的几何中心
                 pedestrian = Pedestrian(center=center, direction=direction, velocity=velocity)

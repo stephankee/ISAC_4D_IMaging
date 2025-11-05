@@ -129,5 +129,6 @@ people_group_2=[people_group_2 v_people_2];
 people_group=[people_group_1;people_group_2];
 %% 返回散射点集
 outputArg1 = [car_group;plant_group;light_group;people_group];
+%outputArg1 = [plant_group];
 end
 
