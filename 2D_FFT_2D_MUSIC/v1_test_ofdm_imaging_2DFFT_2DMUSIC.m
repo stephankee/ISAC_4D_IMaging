@@ -262,7 +262,7 @@ for snr_idx = 1:length(SNR_list)
     disp('正在从蒙特卡洛场景文件加载散射环境......');
     
     % 方式1：从单个场景文件加载
-    scene_file = 'scenario_1/mat_files/scene_003.mat';
+    scene_file = '/home/jaz/code/ISAC_4D_IMaging/2D_FFT_2D_MUSIC/scenario_1/mat_files/scene_003.mat';
     loaded_data = load(scene_file);
     
     % 提取所有散射点数据 [N×4] - (x, y, z, velocity)
