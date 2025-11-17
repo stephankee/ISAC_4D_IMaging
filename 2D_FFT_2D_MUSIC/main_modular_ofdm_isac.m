@@ -28,7 +28,7 @@ PrefixRatio = ofdm_params.PrefixRatio;
 disp('=== 设置雷达与MUSIC参数 ===');
 
 % 多信噪比仿真设置
-SNR_list = [Inf, -20, -10, 0, 10, 20];
+SNR_list = [Inf, -20, -10, 0, 10];
 
 % 基站天线位置
 base_pos = [14, 100, 20];
@@ -56,7 +56,7 @@ music_params.faii_head_offset = 60;
 music_params.faii_back_offset = 90;
 
 % 场景文件目录路径
-scene_dir = '/home/jaz/code/ISAC_4D_IMaging/2D_FFT_2D_MUSIC/scenario_1/mat_files/';
+scene_dir = 'D:\Junzhe\ISAC_4D_IMaging\2D_FFT_2D_MUSIC\scenario_1\mat_files\';
 
 disp('参数设置完毕！');
 disp('===========================================');
@@ -117,7 +117,7 @@ fprintf('\n总仿真任务数: %d 个场景 × %d 个SNR等级 = %d 个任务\n'
 %   └── scene_002/
 %       └── ...
 
-output_base_dir = './snr_simulation_results';
+output_base_dir = 'D:\Junzhe\ISAC_4D_IMaging\2D_FFT_2D_MUSIC\snr_simulation_results\';
 if ~exist(output_base_dir, 'dir')
     mkdir(output_base_dir);
 end

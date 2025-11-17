@@ -452,6 +452,29 @@ close(win);
 % 首先针对测速测距结果进行恒虚警检测
 [RD_threshold_matrix,RD_target_index,RD_detect_matrix_abs] = OSCA_CFAR(Velocity_fft(:, :, 1, 1));
 disp('测速测距完毕！')
+
+%% 可视化第一个天线的速度-距离FFT结果（CFAR输入）
+disp('绘制CFAR输入数据（天线1,1的速度-距离FFT结果）...');
+
+% 提取第一个天线的FFT结果
+Velocity_fft_antenna_1_1 = Velocity_fft(:, :, 1, 1);
+
+% 计算幅值
+Velocity_fft_abs = abs(Velocity_fft_antenna_1_1);
+
+figure;
+imagesc(Velocity_fft_abs);
+colorbar;
+title('Range-Doppler Heatmap (Antenna 1,1)');
+xlabel('Range Bin');
+ylabel('Velocity Bin');
+
+% 标记 CFAR 检测到的目标点
+hold on;
+plot(RD_target_index(:,2), RD_target_index(:,1), 'ro', 'MarkerSize', 5, 'LineWidth', 2);
+hold off;
+
+disp('CFAR输入数据可视化完成！');
 %% 测速测距结果及CFAR门限绘图
 b=-symbols_per_carrier/2:1:symbols_per_carrier/2-1;
 a=1:1:IFFT_length;

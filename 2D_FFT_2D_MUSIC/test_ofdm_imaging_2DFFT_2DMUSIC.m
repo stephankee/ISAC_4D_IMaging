@@ -23,7 +23,7 @@ PrefixRatio=1/4;%循环前缀比率 1/6~1/4
 GI=PrefixRatio*IFFT_length ;%循环前缀的长度
 beta=1/32;%循环后缀比率
 GIP=beta*(IFFT_length+GI);%循环后缀长度
-SNR=20; %信噪比，单位是dB
+SNR=-20; %信噪比，单位是dB
 
 %% 基本参数设置
 c = 3*10^8;  % 电磁波传播速度， 单位m/s
@@ -240,8 +240,8 @@ noise_sigma=Tx_signal_power/linear_SNR;%噪声功率
 noise_scale_factor = sqrt(noise_sigma);%噪声标准差
 noise=randn(1,((symbols_per_carrier)*(IFFT_length+GI))+GIP)*noise_scale_factor;%随机噪声，randn均值为0，方差σ^2 = 1，标准差σ = 1的正态分布的随机数，D（cX）=c^2 * D（X）
 %noise=wgn(1,length(windowed_Tx_data),noise_sigma,'complex');
-%Rx_data=windowed_Tx_data+noise;%接收数据
-Rx_data=windowed_Tx_data
+Rx_data=windowed_Tx_data+noise;%接收数据
+%Rx_data=windowed_Tx_data
 disp('AWGN添加完毕！');
 %% 下变频
 
@@ -326,7 +326,7 @@ BER=bit_error_count/baseband_out_length
 disp('正在从蒙特卡洛场景文件加载散射环境......');
 
 % 方式1：从单个场景文件加载
-scene_file = 'scenario_1/mat_files/scene_003.mat';
+scene_file = 'scenario_1/mat_files/scene_001.mat';
 loaded_data = load(scene_file);
 
 % 提取所有散射点数据 [N×4] - (x, y, z, velocity)
@@ -521,7 +521,7 @@ disp('多天线角度回波信号生成完毕！');
 %% 测角
 disp('开始测角......')
 % MUSIC角度搜索基本参数
-space = 0.1; % 搜索粒度
+space = 0.2; % 搜索粒度
 % 搜索范围
 theta_head_offset = 60;
 theta_back_offset = 60;

@@ -1,0 +1,147 @@
+# ========================================
+# ISAC 4D Imaging Project .gitignore
+# ========================================
+
+# ==================== 仿真结果目录 ====================
+# 排除所有仿真结果目录
+**/snr_simulation_results/
+**/snr_simulation_results_*/
+**/simulation_results/
+**/results/
+
+# ==================== 数据集目录 ====================
+# 排除数据集目录
+**/velocity_fft_dataset/
+**/dataset/
+**/data/pos_all*.mat
+
+# ==================== 场景数据 ====================
+# 排除场景生成的数据和图片
+**/scenario_*/scene_*.mat
+**/scenario_*/scene_*.png
+**/scenario_*/mat_files/*.mat
+
+# 但保留场景生成脚本和配置文件
+!**/scenario_*/*.py
+!**/scenario_*/*.m
+!**/scenario_*/README.md
+
+# ==================== MATLAB 文件 ====================
+# MATLAB 自动保存和临时文件
+*.asv
+*.autosave
+*.mex*
+*.slxc
+slprj/
+
+# MATLAB 图形文件（.fig 格式通常很大）
+*.fig
+
+# MATLAB 数据文件（较大）
+*.mat
+# 但保留某些小的配置/参数文件（如需要可以单独添加）
+# !some_config.mat
+
+# ==================== Python 文件 ====================
+# Python 编译文件和缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# 虚拟环境
+venv/
+env/
+ENV/
+
+# ==================== 图像和可视化结果 ====================
+# 排除生成的图像（但可以选择性保留一些示例图）
+**/image/*.png
+**/image/*.jpg
+**/image/*.jpeg
+**/visualizations/*.png
+**/visualizations/*.jpg
+
+# 保留示例图像（如果有）
+!**/image/example_*.png
+!**/image/README.md
+
+# ==================== 压缩文件 ====================
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# ==================== IDE 和编辑器 ====================
+# VS Code
+.vscode/
+*.code-workspace
+
+# MATLAB 项目文件
+*.prj
+resources/
+
+# 其他 IDE
+.idea/
+*.sublime-*
+
+# ==================== 系统文件 ====================
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ==================== 日志文件 ====================
+*.log
+logs/
+
+# ==================== 临时文件 ====================
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# ==================== 大文件标记 ====================
+# HDF5 数据文件
+*.h5
+*.hdf5
+
+# 其他大型数据文件
+*.bin
+*.dat
+
+# ==================== 批处理结果 ====================
+batch_start.txt
+*.out
+
+# ==================== 特定目录排除 ====================
+# Metric 目录的数据文件
+Metric/data/*.mat
+!Metric/data/README.md
+
+# ==================== 保留重要的文档和脚本 ====================
+# 确保保留所有代码和文档
+!*.m
+!*.py
+!*.md
+!*.txt
+!README*
+!LICENSE
+!.gitignore

@@ -34,10 +34,11 @@ function multi_Rx_complex_carrier_matrix_radar = func_generate_radar_echo(Rx_com
     % 初始化多天线接收矩阵
     multi_Rx_complex_carrier_matrix_radar = zeros(symbols_per_carrier, IFFT_length, M, N);
     
-    win = waitbar(0, '回波计算中...');
+    num_targets = size(point_info, 1);
+    fprintf('回波计算中 (总共 %d 个目标)...\n', num_targets);
     tCount1 = 0;
     
-    for tgt_index = 1:size(point_info, 1)
+    for tgt_index = 1:num_targets
         t00 = tic;
         
         % 获取单目标信息
@@ -91,14 +92,15 @@ function multi_Rx_complex_carrier_matrix_radar = func_generate_radar_echo(Rx_com
             end
         end
         
-        % 剩余时间预估
+        % 剩余时间预估（每处理若干目标输出一次进度）
         tCount1 = tCount1 + toc(t00);
-        t_step = tCount1 / tgt_index;
-        t_res = (size(point_info, 1) - tgt_index) * t_step;
-        str = ['剩余运行时间：', num2str(t_res/60), 'min'];
-        waitbar(tgt_index/size(point_info, 1), win, str);
+        if mod(tgt_index, max(1, floor(num_targets/10))) == 0 || tgt_index == num_targets
+            t_step = tCount1 / tgt_index;
+            t_res = (num_targets - tgt_index) * t_step;
+            fprintf('  进度: %d/%d (%.1f%%), 剩余时间: %.1f 秒\n', ...
+                    tgt_index, num_targets, 100*tgt_index/num_targets, t_res);
+        end
     end
     
-    close(win);
-    disp('多天线回波信号生成完毕！');
+    fprintf('多天线回波信号生成完毕！\n');
 end

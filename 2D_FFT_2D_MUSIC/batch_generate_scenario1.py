@@ -264,8 +264,8 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description='批量生成蒙特卡洛场景 - Scenario 1')
-    parser.add_argument('--num-scenes', type=int, default=10, help='场景数量')
-    parser.add_argument('--output-dir', type=str, default='scenario_1', help='输出目录')
+    parser.add_argument('--num-scenes', type=int, default=500, help='场景数量')
+    parser.add_argument('--output-dir', type=str, default='scenario_3', help='输出目录')
     parser.add_argument('--seed', type=int, default=0, help='起始随机种子')
     parser.add_argument('--no-mat', action='store_true', help='不保存 .mat 文件')
     

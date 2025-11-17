@@ -33,8 +33,8 @@ class SceneConfig:
     SAFETY_BUFFER = 0.5       # 额外的安全距离 (确保物体间有足够间隙)
     
     # 数量范围
-    NUM_VEHICLES = (3, 4)     # 车辆数量范围
-    NUM_PEDESTRIANS = (4, 6)  # 行人数量范围
+    NUM_VEHICLES = (1, 6)     # 车辆数量范围
+    NUM_PEDESTRIANS = (1, 8)  # 行人数量范围
     NUM_LIGHTS = 2            # 路灯数量（固定）
     
     # 速度范围
@@ -163,8 +163,8 @@ class MonteCarloSceneGenerator:
                 # 方向：0° 或 180°
                 direction = np.random.choice([0, 180])
                 
-                # 速度：10 或 -10 m/s
-                velocity = np.random.choice([10, -10])
+                # 速度：-20 到 20 m/s，步长为 2
+                velocity = np.random.choice(np.arange(-20, 22, 2))  # [-20, -18, ..., 18, 20]
                 
                 # 先创建车辆对象以获取实际的几何中心
                 vehicle = Vehicle(center=center, direction=direction, velocity=velocity)
@@ -207,8 +207,8 @@ class MonteCarloSceneGenerator:
                 # 方向：0° 或 180°
                 direction = np.random.choice([0, 180])
                 
-                # 速度：2 或 -2 m/s
-                velocity = np.random.choice([2, -2])
+                # 速度：-4 到 4 m/s，步长为 2
+                velocity = np.random.choice(np.arange(-4, 6, 2))  # [-4, -2, 0, 2, 4]
                 
                 # 先创建行人对象以获取实际的几何中心
                 pedestrian = Pedestrian(center=center, direction=direction, velocity=velocity)
